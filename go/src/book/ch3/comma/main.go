@@ -1,25 +1,11 @@
-// Copyright © 2016 Alan A. A. Donovan & Brian W. Kernighan.
-// License: https://creativecommons.org/licenses/by-nc-sa/4.0/
-
-// See page 73.
-
-// Comma prints its argument numbers with a comma at each power of 1000.
-//
-// Example:
-// 	$ go build gopl.io/ch3/comma
-//	$ ./comma 1 12 123 1234 1234567890
-// 	1
-// 	12
-// 	123
-// 	1,234
-// 	1,234,567,890
-//
 package main
 
 import (
 	"bytes"
 	"fmt"
 	"os"
+	"strings"
+	"unicode"
 )
 
 func main() {
@@ -30,13 +16,24 @@ func main() {
 }
 
 //!+
-// comma inserts commas in a non-negative decimal integer string.
 func comma(s string) string {
-	n := len(s)
-	if n <= 3 {
-		return s
+	substrings := strings.Split(s, ".")
+	switch len(substrings) {
+	case 1:
+		if !unicode.IsDigit(rune(s[0])) {
+			return string(s[0]) + comma(s[1:])
+		}
+		n := len(s)
+		if n <= 3 {
+			return s
+		}
+		return comma(s[:n-3]) + "," + s[n-3:]
+	case 2:
+		return comma(substrings[0]) + "." + substrings[1]
+	default:
+		fmt.Print("To many '.', aborting.")
+		return ""
 	}
-	return comma(s[:n-3]) + "," + s[n-3:]
 }
 
 func bufferedComma(s string) string {
