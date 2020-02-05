@@ -1,0 +1,360 @@
+\documentclass[]{article}
+
+\usepackage{amsmath}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+\usepackage[none]{hyphenat}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\pagestyle{fancy}
+\lhead[]{}
+
+\usepackage[top=1.5cm, bottom=1.5cm, left=3cm, right=3cm]{geometry}
+
+\renewcommand{\thesubsubsection}{\thesubsection.\alph{subsubsection}}
+\newcommand{\fakesubsection}[1]{%
+  \par\refstepcounter{subsection}% Increase subsection counter
+  \subsectionmark{#1}% Add subsection mark (header)
+  \addcontentsline{toc}{subsection}{\protect\numberline{\thesubsection}#1}% Add subsection to ToC
+  % Add more content here, if needed.
+}
+
+\begin{document}
+\large
+
+\section{Processes and Scheduling}
+    \fakesubsection{}
+        \subsubsection{Modern computers store data values in a variety of “memories”, each with differing size and access speeds. Briefly describe each of the following:}
+            \begin{itemize}
+                \item Cache Memory: Fast Random Access Memory stored inside/close to the processor. Used to \textit{cache} heavily used sections of instructions in use such that the processor can access the instructions much faster. Much faster to access Cache Memory compared to Main Memory. Modern machines this is of order of KB.
+                \item Main Memory: Re-writable Random Access Memory, for storing instructions to be loaded by the processor for execution. Modern computers O(GB).
+                \item Registers: Small sections of accessible fast storage (O(8/16/32/64 bits)) available for the processor, which are filled with data and instructions that are then manipulated by the processor.
+                \item Hierarchy: Registers - Cache  - Main
+            \end{itemize}
+        \subsubsection{Give an example situation in which operating systems effectively consider disk storage to be a fourth type of “memory”.}
+            The disk / secondary storage can be used as an additional form of virtual memory. If additional memory is required (i.e main memory filled up), temporary page files / swap files can be created in the disk storage to act in an identical fashion to the main memory, albeit slower.
+    \fakesubsection{}
+        \subsubsection{Describe (with the aid of a diagram where appropriate) the representation in main memory of:}
+            \begin{itemize}
+                \item Unsigned Int: Represented by $n$ bits, (commonly 8, 16, 32). Values stored in binary for $2^n$ distinct values. Can be referred to in base 16 / hex for ease.
+                \item Signed Int: Two options
+                    \begin{itemize}
+                        \item Sign / Magnitude: Same as unsigned it, leftmost bit flags (1)negative, others are the absolute value.
+                        \item 2's complement: convert a positive to negative by applying NOT and adding 1
+                    \end{itemize}
+                \item Text String: An individual character is represented in different fashions based on the encoding used. ASCII uses 7 bits to encode a set of characters, Unicode has 8, 16, and 32 bit versions for larger character sets. Entire text strings are typically stored as arrays of characters. The length of the array can be stored as a precursor bit sequence or implictly through a termination bit sequence.
+                \item Instruction: At an abstract level, instructions comprise an opcode specifying the which action should be executed, along with successive operands detailing where to retrieve values.
+
+                \newpage
+                \begin{table}[ht]
+                    \centering
+                    \begin{tabular}{c|cccccccc}\hline
+                    Section & Cond & 00 & I & Opcode & S & Ra & Rd & Operand 2 \\\hline
+                    Bit Range & 31-28 & 27-26 & 25 & 24-21 & 20 & 19-16 & 15-12 & 11-0 \\\hline
+                    \end{tabular}
+                \end{table}
+
+                As a specific example, the ARM ALU data processing operations:
+                    \begin{itemize}
+                        \item Cond: Condition code, execution rules for instruction
+                        \item I: Immediate Operand: dictates what Operand 2 is
+                        \item Opcode: Explicit instruction
+                        \item S: Set condition codes
+                        \item Rn: 1st operand register
+                        \item Rd: destination register
+                        \item Operand 2: if I == 0, Op2 is a register with a shift and a 2nd register. If I == 1, Op2 is an intermediate value with some shift to be applied.
+                    \end{itemize}
+            \end{itemize}
+        \subsubsection{Does an operating system need to know whether the contents of a particular register represent a signed or unsigned integer?}
+            An operating system does need to know if the contents of a register are signed or unsigned, especially depending on the representation. With two's complement, addition (as an example CPU operation) is identical regardless of the sign. However, more complex comparisons and operations require knowledge of the type. If the negative value is represented in sign/magnitude, additional knowledge is required to check the sign bit before executing the operations.
+        \subsubsection{Describe what occurs during a context switch}
+            A CPU in operation on a single task will run through a set of instructions in a linear transactional fashion. Given processors need to manage multiple tasks at once (user-space and kernel-space processes) in any practical implementation, the CPU is responds to and is directed between processes and events using interrupts and system calls (software triggered interrupt).
+
+            This allows software and hardware signals to affect the CPU, and allows support for multitasking in CPU wait situations (IO for example) and decoupling the CPU requests from device responses. In the IO situation, the IO device will raise an interrupt when the data has been fetched. After interrupt the CPU vectors to the handler, reads the data, and resumes where it left of prior to waiting for the IO.
+
+            The crucial section here is that the processor must be able to resume processing. To this end, the CPU typically preserves the values of most/all registers in the Process Control Block (PCB, context information for a process).
+
+            This process, of an interrupt signaling that the CPU should change tasks, followed by preservation of the current process state and transfer / restore to an alternative task is a context switch. Given no work can occur during a switch, it's all overhead time spent switching.
+    \subsection{Describe with the aid of a diagram how a simple computer executes a program in terms of the fetch-execute cycle, including the ways in which arithmetic instructions, memory accesses and control flow instructions are handled}
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.5\linewidth]{"media/fetchexecute"}
+            \caption{Fetch Execute Cycle}
+        \end{figure}
+        \begin{itemize}
+            \item PC: Program counter, keeps track of the memory address of the next instruction
+            \item MAR: Memory address register, holds address of memory block for r/w
+            \item MDR: Memory data register, holds data fetched from memory or data to be stored in memory
+            \item IR: Instruction Register, Stores fetched instruction
+            \item CU: Control Unit, Records the instruction in the IR, selects and coordinates resources
+            \item ALU: Arithmetic Logic Unit, Performs maths/logic operations
+            \item FPU: Floating point unit, floating point operations
+        \end{itemize}
+
+        \begin{enumerate}
+            \item Fetch: Fetch the next instruction from the PC, and store in IR.
+            \item Decode: Interpret the stored instruction
+            \item Read: If required read from main memory into data registers
+            \item Execute: Execute the instruction, CU passes decoded information as control signals to other components to read data from registers, instruct ALU to manipulate values and write back to register. If the ALU feed s back a signal, the PC may be updated.
+        \end{enumerate}
+        This cycle repeats.
+
+    \newpage
+    \subsection{Process scheduling can be preemptive or non-preemptive. Compare and contrast these approaches, commenting on issues of simplicity, fairness, performance and required hardware support.}
+
+        Process scheduling methods dictate how processes from some ready queue are taken off whenever the CPU becomes idle. In terms of CPU scheduling, there are 4 states that force a scheduling decision:
+
+    \begin{enumerate}
+        \item Process switches from running to waiting/blocked, e.g. due to an I/O request
+        \item A process terminates
+        \item A process switches from running to ready, due to a timer expiry or an interrupt
+        \item A process switches from waiting/blocked to ready, e.g. completion of I/O
+    \end{enumerate}
+
+        If scheduling decisions are carried out only on conditions 1 and 2, the scheduling is \textit{non-preemptive}, otherwise the scheduling is \textit{preemptive}.
+
+        In non-preemptive scheduling any process that has the CPU allocated to it will retain the CPU until either of the two conditions are met. This is simpler than preemptive; there's no need to support interrupts and the lack of process switching aside from termination or blocking means no overhead related to process switching, nor a need to implement timers on the CPU. However, this means that buggy or long running processes can hog the CPU, denying service to other processes. MS-DOS and Windows 3.X made use of this scheduling method.
+
+        For preemptive scheduling, the flexibility of the CPU is much higher; long-running processes can be preempted to allow execution of short running processes or high priority processes without starvation, it allows for interrupts and is used for all modern OSs. This adjustment can lead to low-priority processes starving and never being executed if higher priority processes are added to the ready queue sufficiently frequently. There are also associated costs in terms of complexity, as timers need to be implemented in the software, and using preemptive scheduling also affects the kernel design as if the kernel is required to process a system call while the prior activity involved modifying the kernel data. If the process is preempted while the kernel structure is in an inconsistent state, problems could ensue without a specific kernel execution model or hardware support. It also leads to race conditions, for example if several processes have shared data and a process is preempted while updating the shared store. There is also the execution overhead of having to manage the process switching from running to ready and vice versa.
+
+    \begin{tabularx}{\textwidth} {
+       >{\hsize=.2\hsize\raggedright\arraybackslash}X
+       >{\hsize=.4\hsize\raggedright\arraybackslash}X
+       >{\hsize=.4\hsize\raggedright\arraybackslash}X  } \hline\hline
+     Category & Non-preemptive & Preemptive \\ \hline
+     Simplicity & More simple & Less simple \\
+     Fairness & Weighted towards long running processes, short high priority tasks may starve & weighted towards high priority processes, low priority processes may starve if sufficient high priority processes arrive \\
+     Performance & Efficient given no overhead from process switching, and no race conditions between processes. Hindered by buggy or long running processes & Supports interrupts for critical / high priority processes, avoids long running / slow code derailing or hindering processes. Overhead due to support for timers and interrupts means code is slower in the perfect case, but better overall\\
+     Hardware & No specific hardware support aside from CPU & Requires kernel logic to be designed to support interrupts and changes when the kernel is in an inconsistent state, and requires the hardware to have a timer and interrupt channel to allow for processes to be preempted. \\ \hline\hline
+    \end{tabularx}
+
+    \fakesubsection{}
+        \subsubsection{Describe how the CPU is allocated to processes if static priority scheduling is used. Be sure to consider the various possibilities available in the case of a tie.}
+
+        In static priority scheduling processes arrive with some object measure of priority associated with the process (typically represented by an integer). With \textit{static} priority scheduling, these priority levels are fixed for the process across all time. When the CPU is free to be reallocated, the current highest priority task in the queue will be executed.
+
+        Considering the example given in the notes, for pure static scheduling where the CPU is not interrupted by higher priority tasks:
+
+         \begin{table}[ht]
+            \centering
+            \begin{tabular}{cccccc}\hline\hline
+            Process & Arrival Time & Priority & Burst Time & Execution Time & Wait Time \\ \hline
+            $P_{1}$ & 0 & 3 & 7 & 0 & 0 \\
+            $P_{2}$ & 2 & 2 & 4 & 8 & 6 \\
+            $P_{3}$ & 4 & 1 & 1 & 7 & 3 \\
+            $P_{4}$ & 5 & 2 & 4 & 12 & 7 \\\hline\hline
+            \end{tabular}
+        \end{table}
+
+        Here we've used first in to tie break which of $P_{1}$ and $P_{4}$ should have run first. One option for tie breaking is to use round robin scheduling on those tasks, where the tasks are split over the CPU based on a set unit of time and alternate. Or as given in the example, use First Come First Served to assign the CPU.
+
+        \newpage
+        \subsubsection{“All scheduling algorithms are essentially priority scheduling algorithms.” Discuss this statement with reference to the first-come first-served (FCFS), shortest job first (SJF), shortest remaining time first (SRTF) and round-robin (RR) scheduling algorithms.}
+
+        The statement can be see to arise from consideration of SJF scheduling; while the scheduling is technically derived from the burst time of the job, this is in terms of execution identical to priority scheduling where the priority of a process is $\propto \frac{1}{burst time}$. Considering the algorithm in this fashion, you can describe the algorithm as static priority with a calculated priority per task rather than provided.
+
+        Considering FCFS, the algorithm can be contorted to be described as a priority algorithm, albeit it's probably an over complication of what is carried out by a simple FIFO queue. To frame FCFS as a priority algorithm, each process that is added is assigned a priority based on the order it arrived, e.g. by incrementing a value (a hypothetical not practical solution) per new process and assigning that new value to the new process, with low values taking priority.
+
+        SRTF can also be couched in the logic of priority, where SRTF will always allocate (and interrupt if necessary) the CPU to the current highest priority process, where the priority is the inverse of the remaining time for any given process.
+
+        RR scheduling seems to contradict the statement, as it treats all processes as equally important. You could stretch the definition as with FCFS considering the circular queue that underpins RR, but each process will receive an equal share of the CPU up to the point of completion, and given the fact that all processes are worked on unlike in plain FCFS it seems incorrect to describe it as a priority queue, although you could do at a stretch.
+
+        \subsubsection{What is the major problem with static priority scheduling and how may it be addressed?}
+
+        The principal problem with static priority is the starvation problem: given a sufficient volume of incoming higher priority processes, lower priority processes will be ignored; there is no guarantee a low priority process will ever be executed. The rumour/urban legend of a 6 year low priority process that was never allocated at MIT in the 70s is illustrative of this. This can be addressed by changing from static priority to \textit{dynamic} priority, where the priority of a process changes after its arrival in response to other factors. A simple approach is aging: as a process sits without being allocated, its priority is steadily increased in proportion to the time, which would make it eventually eclipse the incoming higher priority tasks in priority and have CPU allocated. Using a RR style scheduler would also mean that low priority tasks are executed, as the RR has no concept of task priority.
+
+        \newpage
+        \subsubsection{Why do many CPU scheduling algorithms try to favour I/O intensive jobs?}
+
+        I/O intensive jobs are those that spend a good fraction of their total process time blocked waiting for I/O functions. When an IO intensive job is scheduled it will be worked on until it is blocked waiting for the I/O. At this point the CPU is then idle. By favouring I/O intensive jobs over CPU intensive jobs, the CPU can start the I/O process then complete or progress the CPU intensive job while the I/O task is blocked waiting for the I/O. This is more efficient than if the process prioritised the CPU intensive job, which would result in the CPU intensive job being completed, the I/O job started and then the CPU sitting idle waiting for the I/O in this example with one of each process. Overall favouring I/O processes can result in more efficient use of the CPU.
+
+    \subsection{An operating system uses a single queue round-robin scheduling algorithm for all processes. You are told that a quantum of three time units is used.}
+
+        \subsubsection{What can you infer about the scheduling algorithm?}
+
+        Not sure beyond what is already given, round-robin scheduling. Preemptive scheduling with support for interrupts in the kernel. OS is looking for responsiveness overall. Unclear without more detail as to whether the quantum chosen is on the small or the large scale.
+
+        \subsubsection{Why is this sort of algorithm suitable for a multi-user operating system?}
+
+        As mentioned, responsiveness is a key aspect of RR scheduling. With each process guaranteed to be allocated a section of CPU within a short amount of time, processes that originate from distinct users will show a result or at least a response, instead of lower priority / late arriving processes being forced to wait, the source of which would be unclear for the user in question.
+
+        \subsubsection{The following processes are to be scheduled by the operating system. None of the processes ever blocks. New processes are added to the tail of the queue and do not disrupt the currently running process. Assuming context switches are instantaneous, determine the response time for each process.}
+
+         \begin{table}[ht]
+            \centering
+            \begin{tabular}{ccccccc}\hline\hline
+            Process & Creation t & Required t & Completion t & Response t & First Switch t & First Response t \\ \hline
+            $P_{1}$ & 0 & 9 & 15 & 15 & 3 & 3 \\
+            $P_{2}$ & 1 & 4 & 10 & 9 & 6 & 5 \\
+            $P_{3}$ & 7 & 2 & 12 & 5 & 12 & 12 \\\hline\hline
+            \end{tabular}
+        \end{table}
+
+        \newpage
+        \subsubsection{Give one advantage and one disadvantage of using a small quantum.}
+
+        RR scheduling involves significant context switching, which possesses a degree of overhead. High frequency context switching if the quantum is too small can result in significant overhead on the processes. The benefit of a smaller time quantum is that it can reduce turnaround time for processes with smaller burst times, when being handled with longer burst time processes. The small turnaround time means less time is initially spent on the long process and the smaller burst processes can finish within a single time quanta.
+
+    \fakesubsection{}
+        \subsubsection{Describe with the aid of a diagram the life-cycle of a process. You should describe each of the states that it can be in, and the reasons it moves between these states.}
+
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.5\linewidth]{"media/process"}
+            \caption{Fetch Execute Cycle}
+        \end{figure}
+
+        \begin{itemize}
+            \item New: The process is being created
+                \begin{itemize}
+                    \item Process can be \textit{admitted} from new, moving to Ready
+                \end{itemize}
+            \item Running: the process instructions are being executed
+                \begin{itemize}
+                    \item Process can \textit{released} or can \textit{exit} at which point it is Terminated
+                    \item Process can be interrupted/timeout/yield the CPU and move back to Ready
+                    \item Process can be made to wait for an event or I/O moving to Waiting
+                \end{itemize}
+            \item Waiting: The process is stopped waiting for an event (I/O completion, signal reception)
+                \begin{itemize}
+                    \item Process moves back to Ready at the completion of the event
+                \end{itemize}
+            \item Ready: The process is ready to be allocated a CPU to run, waiting
+                \begin{itemize}
+                    \item Process is dispatched from Ready to Running at the behest of the scheduler
+                \end{itemize}
+            \item Terminated: The process has finished executing
+
+        \end{itemize}
+
+        \newpage
+        \subsubsection{What information does the operating system keep in the process control block?}
+
+        The operating system keeps a Process Control Block for each running process, which contains:
+
+            \begin{itemize}
+                \item Process State: The current state / lifecycle stage of the process
+                \item Program Counter: The address of the next instruction for the process
+                \item Process Number / ID / PID: Identifier for the process
+                \item CPU Registers: This section varies significantly with the architecture, but consists of a collection of accumulators, index and general purpose registers, stack pointers and any condition code information. This state information is saved on interrupt to allow the process to be restarted.
+                \item Scheduling Information: Information pertinent to the process scheduling: priority, pointers to queues and other parameters
+                \item Memory Management Information: Contain values of the base (smallest legal memory address) and limit (range of allowed memory addresses) registers, page tables (base address of each individual page in memory), segment tables (mappings between the allocated segments of the overall 1D linear memory)
+                \item I/O status information: list of allocated devices, open files etc.
+                \item Accounting information: CPU and Real Time elapsed, time limits, account, job and process numbers, name of executable, owner
+                \item References to adjacent PCBs
+            \end{itemize}
+
+        \subsubsection{What information do the shortest job first (SJF) and shortest remaining time first (SRTF) algorithms require about each job or process? How can this information be obtained?}
+
+        SJF requires the burst time for a process, and does not require any modification to that value past the point of first receipt.
+        SRTF requires the burst time for a process, and also the elapsed time on the process to calculate the remaining time.
+
+        However, knowing the burst time ahead of time is difficult for long running jobs and very difficult at low level short term scheduling. As a result, the typical approach is to approximate or calculate a predicted value for the next CPU burst, and use that as the value. The conventional method of approximating the burst time $\tau_{n+1}$ is the exponential average of the prior burst times, using a constant $0\leq\alpha\leq 1$, for the time of the previous burst $t_{n}$ and estimated time of previous burst $\tau_{n}$
+
+        \begin{equation}
+            \tau_{n+1} = \alpha t_{n} + (1 - \alpha)\tau_{n}
+                       = \alpha t_{n} + ... + (1 - \alpha)^{j}\alpha t_{n-j} + ... + (1 - \alpha)^{n + 1}\tau_{0}
+        \end{equation}
+
+        for some constant $\tau_{0}$. The value of $\alpha$ is chosen based on some understanding of the system (if prior tasks are irrelevant $\alpha\approx 1$). This average is a good predictor if the variance of process bursts is small, and weighs older times less than more recent times. These values can then be fed into SJF and SRTF as the burst time.
+
+        \subsubsection{Give one advantage and one disadvantage of non-preemptive scheduling.}
+
+        Non-preemptive scheduling is simpler to implement and has less overhead than preemptive scheduling, due to the lack of a requirement for any kind of timer or interrupt system. The principle disadvantage is the vulnerability of the scheduler to long running / buggy process which deny service to the other processes and cause their starvation.
+
+        \subsubsection{What steps does the operating system take when an interrupt occurs? Consider both the programmed I/O and DMA cases, and the interaction with the CPU scheduler.}
+
+        When an interrupt occurs, it is detected by the CPU on a specific interrupt-request line that is checked after each instruction execution. When detected, the CPU saves the state in the PCB for the process and jumps to an interrupt handler. This handler determine the source of the interrupt, performs any necessary processing and the performs a state restore and returns control to the CPU.
+
+        CPU typically have two interrupt lines, maskable (which can be ignored) and nonmaskable. Each interrupt mechanism accepts an address, typically an offset value in the \textit{interrupt vector} which is a memory address to a specialised set of interrupt handlers for different issues.
+
+        Programmed I/O is where the CPU manages transfers within the OS, watching status bits and feeding data to IO controllers. This can be considered wasteful, as the basic I/O commands aren't comparable to the range of a general purpose CPU register. Modern system avoid this issue by offloading the work to a specialised Direct Memory Access (DMA) Controller. A DMA transfer writes a command block describing the transfer to memory, which the DMAC then handles by transferring from disk directly to memory using the memory bus directly without the CPU.
+
+        An interrupt driven I/O cycle is as follows:
+
+        \begin{enumerate}
+            \item The device driver in the CPI initiates an I/O operation
+            \item The I/O Controller initiates the I/O operation on its end
+            \item The I/O operation generates an interrupt signal (i.e. input ready, output complete, error)
+            \item The CPU, which has been handling other instructions and checking for interrupts receives the interrupt and transfers control to the interrupt handler via the interrupt vector
+            \item The interrupt handler processes the data
+            \item The interrupt handler returns from the interrupt
+            \item The CPU resumes the processing on whatever task were interrupted
+        \end{enumerate}
+
+    \newpage
+        A DMA transfer cycle, using FreeBSD as an example when an IO device has data it wants to transfer to main memory, is as follows:
+
+        \begin{enumerate}
+            \item The CPU initiates a DMA transfer with target address and byte count C, by alerting the I/O device
+            \item The IO device is prepared, and alerts the DMAC
+            \item The DMA performs internal checks and requests the memory bus from the CPU
+            \item The CPU detects the interrupt, progresses to where it can release the memory bus and releases it to the DMAC
+            \item The CPU can progress up to the point it requires the memory bus again
+            \item The DMAC then signals the I/O device to transfer the byte via the memory bus to the target address in main memory
+            \item The DMAC completes work for this byte and releases the memory bus, decrementing C
+            \item The CPU begins its pre-existing work again
+            \item This loops until C reaches 0, at which point the DMAC interrupts the CPU to signal completion
+        \end{enumerate}
+
+        Interrupts are the primary point at which the scheduler is called upon. The CPU receives an interrupt, handlers the interrupt appropriately and is then faced with which task to resume with. At this point, the scheduler is used to determine which process to allocate the CPU to. Interrupts that cause the scheduler to be invoked would typically be external interrupts from I/O devices and so on but would also arise (in modern processors) from clock interrupts where the internal clock timer on the CPU determines sufficient time has passed to reassess, similar to RR scheduling.
+
+
+        \subsubsection{What problems could occur if a system experienced a very high interrupt load? What if the device[s] in question were DMA-capable?}
+
+        Primarily, the issue is with high interrupt load the core work of the CPU is neglected, whatever processes were attempting to use the register will continually be set aside as the CPU devotes time and resources to handling the incoming interrupts. In the absurd case, you could imagine that the CPU exclusively processes interrupt handling instructions, and never manages to free itself for the main processes. The net result would be processes would starve and remain incomplete, or at least take a significant portion of time.
+
+        If the device was DMA capable, interrupts relating to transferring from I/O to main memory could be have their processing offloaded onto the DMAC, alleviating the pressure on the CPU and allowing the general processes to be worked on. This would cut down the interrupt rate to a degree, but only for memory access issues.
+
+        In summary, high volumes of interrupts load the processor and result in less processing time spent on the other tasks.
+
+\newpage
+\section{Memory Management}
+
+    \fakesubsection{}
+        \subsection{What is the address binding problem?}
+            In the machinecode of a source program, addresses to variables or memory locations are typically symbolic, such as assigning a variable \texttt{count}. This symbolic reference to a memory location is useful for the source program, but cannot be used in with main memory as firstly, the memory has no concept of the symbol used and additionally the memory space for that program is not guaranteed to be constant. This is the address binding problem, the difficulty of translating the symbolic or relative address references from a source program to absolute addresses within the hardware's memory space.
+
+        \subsection{The address binding problem can be solved at compile time, load time or run time. For each case, explain what form the solution takes, and give one advantage and one disadvantage.}
+
+        \begin{itemize}
+            \item Compile Time: assuming at the time of compilation it is known where within the memory space the program will reside, \textit{absolute} addresses can be generated for the software, say be beginning at the designated start point for the code $R$ and moving up from that address. If for whatever reason the execution point of the program changes, complete recompilation is required.
+            \begin{itemize}
+                \item Requires no additional recalculation post compile time, the binary can be loaded and executed
+                \item Requires strictly setting a specific start point, hard to then guarantee different programs can work together and hardware changes would necessitate unique compilation.
+            \end{itemize}
+            \item Load Time: if the base start point is unknown, it's possible to generate relocatable code. The addresses can be envision as being generated relative to an unknown starting value which when know at load time, each address is finally bound to an absolute address. If the start point changes, the code can be reloaded with the new start point without needing recompilation.
+            \begin{itemize}
+                \item Can adapt to a new start point by reloading
+                \item Although that may be a destructive operation from the perspective of the process, and needs to be calculated every time the process starts.
+            \end{itemize}
+            \item Execution Time: If the memory space for the OS is constantly changing and processes need to be moved to better accommodate the full set of processes, the code needs to support being shuffled around, and the binding of the symbolic references needs to be delayed until run time. This requires special hardware such as a Memory Management unit to facilitate the dynamic relocation of the program. Most modern operating systems use this approach.
+            \begin{itemize}
+                \item No need to reload or adapt the software when the location changes in the memory
+                \item Needs specialised MMU hardware
+            \end{itemize}
+        \end{itemize}}
+
+    \subsection{For each of the following, indicate if the statement is true or false, and explain why:}
+
+        \subsubsection{Preemptive schedulers require hardware support.}
+
+            \textbf{True}: to enable preemptive scheduling the hardware needs to allow for a process to be preempted/interrupted. This is done by dedicated interrupt lines monitored by the CPU and / or a timer / clock.
+
+        \subsubsection{A context switch can be implemented by a flip-flop stored in the translation lookaside buffer (TLB).}
+
+            Translation Lookaside buffer is a small fast lookup hardware memory cache used to store previously calculated translations between virtual memory addresses and absolute memory addresses, for the sake of rapid memory access in the case of sophisticated virtual memory management (paging / segmenting)
+
+            Flip-flop: binary state storage
+
+            \textbf{?}:
+
+        \subsubsection{Non-blocking I/O is possible even when using a block device.}
+
+        \subsubsection{Shortest job first (SJF) is an optimal scheduling algorithm.}
+
+            \textbf{True}: SJF scheduling, in the perfect theoretical sense is an optimal algorithm. Running SJF results in maximum throughput for a system and minimum average waiting time for processes. The caveat is that SJF cannot be truly applied in practice, as knowing the burst time ahead of execution is impossible.
+
+
+\end{document}
