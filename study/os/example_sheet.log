@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  30 JAN 2020 11:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  24 FEB 2020 22:25
 entering extended mode
 **./example_sheet.tex
 (example_sheet.tex
@@ -395,42 +395,42 @@ Overfull \hbox (4.82976pt too wide) in paragraph at lines 296--297
  bus, decrementing
  []
 
-[11]
-! Too many }'s.
-l.337         \end{itemize}}
-                            
-You've closed more groups than you opened.
-Such booboos are generally harmless, so keep going.
+[11] [12] [13]
+Overfull \hbox (1.08803pt too wide) in paragraph at lines 409--410
+\OT1/cmr/m/n/12 doesn't have to worry about fitting its memory allocations into
+ the physical memory
+ []
 
-[12] [13] (example_sheet.aux) ) 
+[14] [15] [16] (example_sheet.aux) ) 
 Here is how much of TeX's memory you used:
  2836 strings out of 494889
- 40501 string characters out of 3176851
+ 40581 string characters out of 3176851
  114527 words of memory out of 3000000
  6421 multiletter control sequences out of 15000+200000
  9593 words of font info for 35 fonts, out of 3000000 for 9000
  0 hyphenation exceptions out of 8191
- 41i,10n,43p,1171b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
-</Library/Application Support/MiKTeX/texmfs/inst
-all/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Library/Application Support/MiK
-TeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Library/Applicat
-ion Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb></L
-ibrary/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm
-/cmmi12.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/pub
-lic/amsfonts/cm/cmmi8.pfb></Library/Application Support/MiKTeX/texmfs/install/f
-onts/type1/public/amsfonts/cm/cmr10.pfb></Library/Application Support/MiKTeX/te
-xmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb></Library/Application Sup
-port/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb></Library/Ap
-plication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr8.pfb
-></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfont
-s/cm/cmsl10.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb></Library/Application Support/MiKTeX/texmfs/inst
-all/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Library/Application Support/MiKT
-eX/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></Library/Applicati
-on Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on example_sheet.pdf (13 pages, 256363 bytes).
+ 41i,11n,43p,1171b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
+</Library/Application Support/MiKTeX/texmfs
+/install/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Library/Application Suppor
+t/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Library/App
+lication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pf
+b></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfon
+ts/cm/cmmi12.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type
+1/public/amsfonts/cm/cmmi8.pfb></Library/Application Support/MiKTeX/texmfs/inst
+all/fonts/type1/public/amsfonts/cm/cmr10.pfb></Library/Application Support/MiKT
+eX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb></Library/Applicatio
+n Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb></Libra
+ry/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr
+8.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/am
+sfonts/cm/cmsl10.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></Library/Application Support/MiKTeX/texmfs
+/install/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Library/Application Support
+/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></Library/Appl
+ication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb
+>
+Output written on example_sheet.pdf (16 pages, 266825 bytes).
 PDF statistics:
- 106 PDF objects out of 1000 (max. 8388607)
+ 115 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -334,7 +334,7 @@
                 \item No need to reload or adapt the software when the location changes in the memory
                 \item Needs specialised MMU hardware
             \end{itemize}
-        \end{itemize}}
+        \end{itemize}
 
     \subsection{For each of the following, indicate if the statement is true or false, and explain why:}
 
@@ -348,13 +348,100 @@
 
             Flip-flop: binary state storage
 
-            \textbf{?}:
+             \textbf{True} The translation lookaside buffer provides access to memory. If the section it is providing access to is the stack for one process, and the flip-flop changes the TLB to point to a section of memory used as the stack for a separate process, a context switch has been enacted.
 
         \subsubsection{Non-blocking I/O is possible even when using a block device.}
+
+            \textbf{True}: all devices are effectively blocking, but with threading or context switching you can, provided there is a call back mechanism for the device to signal completion. The first thread starts the IO, tells a second thread to wait for the call back and continues occasionally checking the request.
 
         \subsubsection{Shortest job first (SJF) is an optimal scheduling algorithm.}
 
             \textbf{True}: SJF scheduling, in the perfect theoretical sense is an optimal algorithm. Running SJF results in maximum throughput for a system and minimum average waiting time for processes. The caveat is that SJF cannot be truly applied in practice, as knowing the burst time ahead of execution is impossible.
+
+        \subsubsection{Round-robin scheduling can suffer from the so-called ‘convoy effect’.}
+
+            \textbf{False}: The convoy effect is an issue in FCFS scheduling where all tasks end up waiting behind a single massive long running task. With RR scheduling each process is allocated a block of fixed time, so the long running problem process will be interrupted and other processes executed in its place.
+
+        \subsubsection{A paged virtual memory is smaller than a segmented one.}
+
+        Example: The paged and segmented strategies of 32-bit Intel architecture, with the total addressable memory space of $2^32$.
+
+        Segmented: IA-32 permits maximum segment size of 4GB and a maximum segment number per process of 16K, divided between 8K private to that process and 8K shared between all processes. With a segmentation table for each partition. A logical address is 48bits, with a 16 bit segment selector and 32 bit offset. Each entry in the selector table is a base (32 bit address) and a limit (20 bit). As each process can have it's own local segment table, this could get rather large. (8000 * 52 + N * 8000 * 52)
+
+        Paged: IA-32 allows two page sizes (4kB and 4MB), with a two level paging scheme for a 32 bit linear address,
+
+        \begin{tabularx}{\textwidth} {
+           >{\hsize=.13\hsize\raggedright\arraybackslash}X
+           >{\hsize=.29\hsize\raggedright\arraybackslash}X
+           >{\hsize=.29\hsize\raggedright\arraybackslash}X
+           >{\hsize=.29\hsize\raggedright\arraybackslash}X  } \hline\hline
+                Page Size & 10 & 10 & 12 \\\hline
+                4kB & Page Directory, points to inner page table & Inner page table, points to page & offset in 4kb page \\\hline
+                4MB & Page Directory, points to actual page & combined with 12 bit section to form 22 bit offset & \\\hline\hline
+        \end{tabularx}
+
+        In IA-32, each structure has 1024 entries of 32 bit each, meaning the total possible size of the page structures is (1024 * 4 * 1024) + 1024 * 4, so just over 4MB of paging table.
+
+        So for a worst case scenario, the segmentation would require 10 processes each occupying all 8K possible segment to match the memory commitment of page tables.
+
+        \textbf{False} Paged virtual memory requires the full set of page tables given the architecture in question, which will be larger than a comparable segmentation table, as the segments can be sized as required.
+
+        \subsubsection{Direct memory access (DMA) makes devices go faster.}
+
+        If devices mean the Machine as a whole, \textbf{True}, if devices refers to components or I/O Hardware, \textbf{False}. DMA doesn't speed up the I/O hardware, it frees up the processor to operate while it would be waiting for the I/O or blocking operation, which can improve the overall processing speed of the device, but wouldn't speed up the particular action that is blocking the processor.
+
+
+        \subsubsection{System calls are an optional extra in modern operating systems.}
+
+        \textbf{False}: System calls allow processes to execute low level operating system functionality. As such low level functionality will always be required, it can be said that system calls will always be required. However, it's not necessary that the processes use these low level system calls, they can be concealed behind an API or a System Call Interface. With this set up you could make an argument that the system calls are optional as only these interfaces are required.
+
+
+        \subsubsection{In Unix, hard-links cannot span mount points.}
+
+
+        \subsubsection{The Unix shell supports redirection to the buffer cache.}
+
+    \subsection{Most operating systems provide each process with its own address space by providing a level of indirection between virtual and physical addresses}
+
+        \subsubsection{Give three benefits of this approach}
+
+         \begin{itemize}
+            \item Simplicity: Each process can be present with a neat linear block of memory allocated to it, irrespective of the overall set of processes in the OS. Each process doesn't have to worry about fitting its memory allocations into the physical memory space.
+            \item Memory Space Increase: By using virtual memory, the total allocated memory for the system can exceed the physical memory of the machine.
+            \item Security benefits: By allowing each process its own address space, a process cannot access memory outside of its allocated space, which has obvious security benefits. \textit{This is not necessarily true, out of memory / stack exploits are a common attack method}
+        \end{itemize}
+
+        \subsubsection{Are there any drawbacks? Justify your answer.}
+
+            In terms of raw efficiency, overhead. As an example, for the IA-32 paging architecture an address lookup has to go through two tables before accessing the byte in question. This can be alleviated with hardware; translation lookaside buffers registers and so on but is still slower than direct absolute lookup. As mentioned though, this requires specific hardware designs, and increased complexity of the operating system.
+
+        \subsubsection{A processor may support a paged or a segmented virtual address space.}
+
+        \begin{itemize}
+            \item Sketch the format of a virtual address in each of these cases, and explain using a diagram how this address is translated to a physical one.
+
+            Paging:
+            \begin{table}[ht]
+                \centering
+                \begin{tabular}{cc}\hline\hline
+                Page Number & Page Offset \\\hline
+                p & d \\
+                m - n & n \\
+                10 + 10 & 12 \\\hline\hline
+                \end{tabular}
+            \end{table}
+
+            Logical address consists of page number and offset. The page number refers to a page table that translates to an occupied page in memory. The offset is then used to access the bytes in question.
+
+            Segmented:
+            Logical Address is a segment number and an offset. The exact sizes of which vary. The segment number refers to an entry in the segment table for that process. That entry is a limit and a base. The base refers to the absolute memory address of the allocated segment and the limit is the size of the segment. The logical address maps to the segment, the segment maps to the absolute address and the offset gives the exact byte. If the offset exceeds the limit the processor will complain.
+
+            \item In which case is physical memory allocation easier? Justify your answer.
+            \item Give two benefits of the segmented approach.
+        \end{itemize}
+
+
+
 
 
 \end{document}
