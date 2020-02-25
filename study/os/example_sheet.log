@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  24 FEB 2020 22:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  25 FEB 2020 19:42
 entering extended mode
 **./example_sheet.tex
 (example_sheet.tex
@@ -401,7 +401,19 @@ Overfull \hbox (1.08803pt too wide) in paragraph at lines 409--410
  the physical memory
  []
 
-[14] [15] [16] (example_sheet.aux) ) 
+[14] [15]
+Overfull \hbox (0.58388pt too wide) in paragraph at lines 462--463
+[]\OT1/cmr/m/n/12 Memory Protection / Management module: Add base and limit val
+ues (in registers)
+ []
+
+
+Overfull \hbox (2.19337pt too wide) in paragraph at lines 468--469
+\OT1/cmr/m/n/12 As discussed, OS operations required by processes are triggered
+ by system calls, normally
+ []
+
+[16] [17] [18] (example_sheet.aux) ) 
 Here is how much of TeX's memory you used:
  2836 strings out of 494889
  40581 string characters out of 3176851
@@ -428,9 +440,9 @@ type1/public/amsfonts/cm/cmsy10.pfb></Library/Application Support/MiKTeX/texmfs
 /MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></Library/Appl
 ication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb
 >
-Output written on example_sheet.pdf (16 pages, 266825 bytes).
+Output written on example_sheet.pdf (18 pages, 273573 bytes).
 PDF statistics:
- 115 PDF objects out of 1000 (max. 8388607)
+ 121 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

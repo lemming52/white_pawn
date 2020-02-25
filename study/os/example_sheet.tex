@@ -437,8 +437,55 @@
             Logical Address is a segment number and an offset. The exact sizes of which vary. The segment number refers to an entry in the segment table for that process. That entry is a limit and a base. The base refers to the absolute memory address of the allocated segment and the limit is the size of the segment. The logical address maps to the segment, the segment maps to the absolute address and the offset gives the exact byte. If the offset exceeds the limit the processor will complain.
 
             \item In which case is physical memory allocation easier? Justify your answer.
+
+            Physical memory allocation is easier with paging. With a paging approach the physical memory space is divided into chunks of a set size, and new allocations come as single pages that can be readily assigned to a (free) chunk. With segmented approaches, as the segments are variable size, it may be necessary to reorder the allocated segments of memory as there is no guarantee that a new segment can be fitted in in a continuous block even if in total the physical memory has enough free space.
+
             \item Give two benefits of the segmented approach.
+
+            Segmented systems typically have less overhead in allocation and retrieval of memory, although suffer from the cost of managing the segments. In addition, the segment table is smaller and simpler than a comparable page table.
         \end{itemize}
+
+        \subsection{System calls are part of most modern operating systems.}
+
+            \subsubsection{What is the purpose of a system call?}
+
+            System calls allow processes to make requests and use underlying functionality of the kernel that they normally would not be able to use. This can be creating a new process, creating or removing a file, aborting a process and other such tasks.
+
+            \subsubsection{What mechanism is typically used to implement system calls?}
+
+            The system calls themselves are OS level interrupts to trigger the specific functionality, but the system calls themselves are normally hidden behind a library or an API. The library exposes the set of functionality and the required parameters that then behind the scenes execute the actual system calls. Examples are the Windows API, POSIX and libc.
+
+        \subsubsection{Operating systems need to be able to prevent applications from crashing or locking up the system, or from interfering with other applications. Which three kinds of hardware support do we require to accomplish this?}
+
+        \begin{itemize}
+            \item Privileged execution mode of the kernel: hardware support to distinguish between two execution modes of the kernel, user mode on behalf of user / process and kernel mode on behalf of the OS
+            \item Memory Protection / Management module: Add base and limit values (in registers) to define an allowed block of memory, check every incoming reference to be within this block and only allow alteration of the limit values by the kernel mode.
+            \item CPU Timer: Have a timing system that ticks over with every CPU process, resets the timer on new process and interrupts the CPU if the timer reaches zero.
+        \end{itemize}
+
+        \subsubsection{How do applications request that the operating system perform tasks on their behalf?}
+
+            As discussed, OS operations required by processes are triggered by system calls, normally via a library or API, which will accept the incoming request from the process and evaluate if it wants to execute it or not.
+
+        \subsubsection{What could we do if we did not have the requisite hardware support?}
+
+            One option is to limit the possible system calls and permitted operations for processes, but this results in much decreased possible functionality. Alternatives are microkernels, where the OS is structured as a collection of small kernel servers that interact with the hardware. tHis gives a degree of memory and process management. Alternatively the process of virtual machines and containers, where entire operating systems are simulated and isolated, or containers where each process can be treated as a separate entity over the underlying system.
+
+        \subsubsection{In the context of memory management, under which circumstances do external and internal fragmentation occur? How can each be handled?}
+
+        \textbf{External Fragmentation}: Occurs when there is sufficient free memory to satisfy an allocation, but the free memory is not in a single continuous block so cannot be allocated to the new allocation. External fragmentation can be alleviated with good memory allocation strategies (best fit) or by runtime adjustments using compaction where the allocated blocks are reallocated to remove the external fragments. Alternatively using something like paging strategies removes external fragmentation, but permit internal fragmentation.
+
+        \textbf{Internal Fragmentation}: Occurs when memory is being managed with set size partitions, as in paging systems. If a process requires an allocation above the partition size, the allocation ends up split over multiple partitions, with the extra partition having 'wasted' memory allocation. Internal fragmentation is lessened with good sized blocks of memory, which correspond well to the typical process requirement.
+
+        \subsubsection{What is the purpose of a page table? What sort of information might it contain? How does it interact with a TLB?}
+
+        The page table translates between the logical memory space of a process and the physical partitions it has been allocated. The logical address is translated by the page table to an absolute reference, which then is used with the offset of the logical address to retrieve the memory. This is done as the page table contains the base address of each defined page in memory. However, this results in several memory accesses per memory request. This is commonly solved with a Translation look-aside buffer which is a small section of high speed memory which allows simultaneous comparison. This can be used to store a small set of the total page table entries; if the incoming request is in this subset the absolute base can be returned with effectively no performance penalty. If the TLB misses and the page is not present, the page table can be consulted and the more recently used entry inserted to the TLB.
+
+        \subsubsection{Describe with the aid of a diagram a two-level page table. Explain the motivation behind the structure and how it operates.}
+
+        A two-level page table, as used in the IA-32 architecture, allows a couple of things. The logical address for a multilevel schema consists of a reference to a top level page table, then the remaining bits are either a reference to an inner table and an offset, or all bits are an offset value. The top level page table can contain a flag describing the page size of what it is referring to. If the page size is set, it's referring to a larger page and all other bits are an offset in that larger page. If not set, the second page table is used in the same way as a single level page table.
+
+
 
 
 
