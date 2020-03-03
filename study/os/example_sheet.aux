@@ -27,6 +27,7 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.c}What information do the shortest job first (SJF) and shortest remaining time first (SRTF) algorithms require about each job or process? How can this information be obtained?}{9}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.d}Give one advantage and one disadvantage of non-preemptive scheduling.}{10}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.e}What steps does the operating system take when an interrupt occurs? Consider both the programmed I/O and DMA cases, and the interaction with the CPU scheduler.}{10}}
+\newlabel{DMA}{{1.7.e}{10}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {1.7.f}What problems could occur if a system experienced a very high interrupt load? What if the device[s] in question were DMA-capable?}{11}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Memory Management}{12}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1}}{12}}
@@ -56,3 +57,15 @@
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.f}In the context of memory management, under which circumstances do external and internal fragmentation occur? How can each be handled?}{17}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.g}What is the purpose of a page table? What sort of information might it contain? How does it interact with a TLB?}{17}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {2.6.h}Describe with the aid of a diagram a two-level page table. Explain the motivation behind the structure and how it operates.}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}File Systems \& IO}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Explain how a program accesses I/O devices when:}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.a}it is running in supervisor-mode / kernel-mode}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.b}it is running in user-mode}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}From the point of view of the device driver, data may be read from an I/O device using polling, interrupt-driven programmed I/O, or direct memory access (DMA). Briefly explain each of these terms, and in each case outline using pseudo-code (or a flow chart) the flow of control in the device driver when reading data from the device.}{19}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.a}Polling}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.b}Interrupts}{20}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.c}DMA}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}From the point of view of the application programmer, data may be read from a device in a blocking, non-blocking or asynchronous fashion. Using a keyboard as an example device, describe the expected behaviour in each case.}{21}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.a}Blocking}{21}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.b}Non-Blocking}{21}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.c}Asynchronous}{21}}

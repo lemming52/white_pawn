@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  25 FEB 2020 19:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (MiKTeX 2.9.6840) (preloaded format=pdflatex 2018.11.21)  3 MAR 2020 21:16
 entering extended mode
 **./example_sheet.tex
 (example_sheet.tex
@@ -378,71 +378,76 @@ overhead than preemptive
  []
 
 [9]
-Overfull \hbox (12.0155pt too wide) in paragraph at lines 270--271
+Overfull \hbox (12.0155pt too wide) in paragraph at lines 271--272
 []\OT1/cmr/m/n/12 CPU typically have two interrupt lines, maskable (which can b
 e ignored) and nonmaskable.
  []
 
 
-Overfull \hbox (2.0019pt too wide) in paragraph at lines 280--281
+Overfull \hbox (2.0019pt too wide) in paragraph at lines 281--282
 \OT1/cmr/m/n/12 receives the interrupt and transfers control to the interrupt h
 andler via the interrupt
  []
 
 [10]
-Overfull \hbox (4.82976pt too wide) in paragraph at lines 296--297
+Overfull \hbox (4.82976pt too wide) in paragraph at lines 297--298
 []\OT1/cmr/m/n/12 The DMAC completes work for this byte and releases the memory
  bus, decrementing
  []
 
 [11] [12] [13]
-Overfull \hbox (1.08803pt too wide) in paragraph at lines 409--410
+Overfull \hbox (1.08803pt too wide) in paragraph at lines 410--411
 \OT1/cmr/m/n/12 doesn't have to worry about fitting its memory allocations into
  the physical memory
  []
 
 [14] [15]
-Overfull \hbox (0.58388pt too wide) in paragraph at lines 462--463
+Overfull \hbox (0.58388pt too wide) in paragraph at lines 463--464
 []\OT1/cmr/m/n/12 Memory Protection / Management module: Add base and limit val
 ues (in registers)
  []
 
 
-Overfull \hbox (2.19337pt too wide) in paragraph at lines 468--469
+Overfull \hbox (2.19337pt too wide) in paragraph at lines 469--470
 \OT1/cmr/m/n/12 As discussed, OS operations required by processes are triggered
  by system calls, normally
  []
 
-[16] [17] [18] (example_sheet.aux) ) 
+[16] [17] [18] [19]
+Overfull \hbox (0.8933pt too wide) in paragraph at lines 533--534
+\OT1/cmr/m/n/12 determines the cause of the interrupt, handles the interrupt by
+ performing the processing
+ []
+
+[20] [21] (example_sheet.aux) ) 
 Here is how much of TeX's memory you used:
- 2836 strings out of 494889
- 40581 string characters out of 3176851
- 114527 words of memory out of 3000000
- 6421 multiletter control sequences out of 15000+200000
+ 2837 strings out of 494889
+ 40586 string characters out of 3176851
+ 114540 words of memory out of 3000000
+ 6422 multiletter control sequences out of 15000+200000
  9593 words of font info for 35 fonts, out of 3000000 for 9000
  0 hyphenation exceptions out of 8191
  41i,11n,43p,1171b,301s stack positions out of 5000i,500n,10000p,200000b,50000s
-</Library/Application Support/MiKTeX/texmfs
-/install/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Library/Application Suppor
-t/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Library/App
-lication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pf
-b></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfon
-ts/cm/cmmi12.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type
-1/public/amsfonts/cm/cmmi8.pfb></Library/Application Support/MiKTeX/texmfs/inst
-all/fonts/type1/public/amsfonts/cm/cmr10.pfb></Library/Application Support/MiKT
-eX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb></Library/Applicatio
-n Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb></Libra
-ry/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr
-8.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/am
-sfonts/cm/cmsl10.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/
-type1/public/amsfonts/cm/cmsy10.pfb></Library/Application Support/MiKTeX/texmfs
-/install/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Library/Application Support
-/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></Library/Appl
-ication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb
->
-Output written on example_sheet.pdf (18 pages, 273573 bytes).
+</Library/Application Support/MiKTeX/texmfs/inst
+all/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Library/Application Support/MiK
+TeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Library/Applicat
+ion Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb></L
+ibrary/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm
+/cmmi12.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/pub
+lic/amsfonts/cm/cmmi8.pfb></Library/Application Support/MiKTeX/texmfs/install/f
+onts/type1/public/amsfonts/cm/cmr10.pfb></Library/Application Support/MiKTeX/te
+xmfs/install/fonts/type1/public/amsfonts/cm/cmr12.pfb></Library/Application Sup
+port/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb></Library/Ap
+plication Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmr8.pfb
+></Library/Application Support/MiKTeX/texmfs/install/fonts/type1/public/amsfont
+s/cm/cmsl10.pfb></Library/Application Support/MiKTeX/texmfs/install/fonts/type1
+/public/amsfonts/cm/cmsy10.pfb></Library/Application Support/MiKTeX/texmfs/inst
+all/fonts/type1/public/amsfonts/cm/cmsy8.pfb></Library/Application Support/MiKT
+eX/texmfs/install/fonts/type1/public/amsfonts/cm/cmti12.pfb></Library/Applicati
+on Support/MiKTeX/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on example_sheet.pdf (21 pages, 286234 bytes).
 PDF statistics:
- 121 PDF objects out of 1000 (max. 8388607)
+ 131 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

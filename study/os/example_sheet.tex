@@ -264,6 +264,7 @@
         Non-preemptive scheduling is simpler to implement and has less overhead than preemptive scheduling, due to the lack of a requirement for any kind of timer or interrupt system. The principle disadvantage is the vulnerability of the scheduler to long running / buggy process which deny service to the other processes and cause their starvation.
 
         \subsubsection{What steps does the operating system take when an interrupt occurs? Consider both the programmed I/O and DMA cases, and the interaction with the CPU scheduler.}
+        \label{DMA}
 
         When an interrupt occurs, it is detected by the CPU on a specific interrupt-request line that is checked after each instruction execution. When detected, the CPU saves the state in the PCB for the process and jumps to an interrupt handler. This handler determine the source of the interrupt, performs any necessary processing and the performs a state restore and returns control to the CPU.
 
@@ -442,7 +443,7 @@
 
             \item Give two benefits of the segmented approach.
 
-            Segmented systems typically have less overhead in allocation and retrieval of memory, although suffer from the cost of managing the segments. In addition, the segment table is smaller and simpler than a comparable page table.
+            Segmented systems typically have less overhead in allocation and retrieval of memory, although suffer from the cost of managing the segments. In addition, the segment table is smaller and simpler than a comparable page table. The segmented view has a cleaner logical picture of the memory location.
         \end{itemize}
 
         \subsection{System calls are part of most modern operating systems.}
@@ -484,6 +485,76 @@
         \subsubsection{Describe with the aid of a diagram a two-level page table. Explain the motivation behind the structure and how it operates.}
 
         A two-level page table, as used in the IA-32 architecture, allows a couple of things. The logical address for a multilevel schema consists of a reference to a top level page table, then the remaining bits are either a reference to an inner table and an offset, or all bits are an offset value. The top level page table can contain a flag describing the page size of what it is referring to. If the page size is set, it's referring to a larger page and all other bits are an offset in that larger page. If not set, the second page table is used in the same way as a single level page table.
+
+
+\newpage
+\section{File Systems \& IO}
+
+    \subsection{Explain how a program accesses I/O devices when:}
+
+        \subsubsection{it is running in supervisor-mode / kernel-mode}
+
+            When in kernel mode the program has complete access to the underlying hardware, with the ability to alter base and limit registers and execute the full set of CPU instructions. The OS can interact with the various I/O class devices (Block, Character, Network and Other). The OS deals with the rate impedance by having a variety of strategies that allow the CPU to be freed from waiting for the blocking I/O; polling, interrupt driven or DMA. The CPU will trigger these, wait for the I/O while performing other operations. When the I/O is finished, it can return the result. More detail of the modes is covered in the next question.
+
+        \subsubsection{it is running in user-mode}
+
+            When in user mode, the program is prevented from directly performing I/O operations. Users cannot access I/O directly, they need to trigger I/O via system calls to the OS, which then performs the I/O and returns to the user when it has been completed.
+
+    \subsection{From the point of view of the device driver, data may be read from an I/O device using polling, interrupt-driven programmed I/O, or direct memory access (DMA). Briefly explain each of these terms, and in each case outline using pseudo-code (or a flow chart) the flow of control in the device driver when reading data from the device.}
+
+        To ground discussion consider a typical I/O port, consisting of 4 registers, which is handled by a controller and hosted by the main device
+
+        \begin{itemize}
+            \item Status Register: contains bits that can be read by the host, which indicate the state of the I/O device and the operation: if the command has been completed, if an error has occurred or whether a byte can be read from data-in.
+            \item Control Register: can be written by the host to start a command or change the device mode. As an example, one bit could set the word length to 7 or 8 bits, one selects the speed of the port, one enables parity checking (keeping track of whether the number of ones or zeros is even or odd, useful for error checking), and one sets duplex communication mode (full-duplex where communication can go both ways simultaneously, or half where two way communication is possible but limited to one way at a time)
+            \item Data-In Register: is read by the host to get the input
+            \item Data-Out Register: Written to by the host to send the output.
+        \end{itemize}
+
+        \subsubsection{Polling}
+
+            The host sets the \texttt{command-ready} bit in the command register when it is ready to execute the next command through the I/O controller, and the controller has a \texttt{busy} bit that indicates it's state. A typical polling cycle is:
+
+            \begin{enumerate}
+                \item The host repeatedly reads the \texttt{busy} bit until the bit is clear
+                \item The host sets the \texttt{write} bit in the command register and writes a byte into the \texttt{data-out} register.
+                \item The host sets the \texttt{command-ready} bit
+                \item When the controller notices the \texttt{command-ready} bit is set, is sets the \texttt{busy} bit.
+                \item The controller reads the \texttt{write} command, reads the \texttt{data-out} register and executes the I/O for the byte.
+                \item The controller clears \texttt{command-ready} from the command register, clears the \texttt{error} bit to indicate success and clears the \texttt{busy} bit.
+            \end{enumerate}
+
+            This loop is repeated for each byte. While the cost of checking the \texttt{busy} bit is very cheap in terms of CPU cycles, it rapidly becomes inefficient if it frequently finds the controller unable to accept a command, it repeatedly loops over step 1. It may switch over to another task, but at this point knowing when the I/O process is ready is difficult.
+
+        \subsubsection{Interrupts}
+
+            An interrupt driven approach is a method to avoid the wait time of polling and the wasted checks. For this, the CPU has a dedicated hardware wire, the \textit{interrupt-request} line that the CPU senses after each instruct execution rather than polling a controller. When the CPU detects a signal on the wire, which can be set by a controller, it performs a state-save and uses a dedicated interrupt handler routine at a fixed point in memory to respond to the signal.
+
+            The controller raises and interrupt by triggering this signal, which is caught by the CPU hand dispatched to the interrupt handler routine. The interrupt handler routine determines the cause of the interrupt, handles the interrupt by performing the processing required, restores the state that was interrupted and clears the interrupt by executing a return from interrupt instruction.
+
+
+            This is the basis of an interrupt driven approach, but in modern systems this becomes much more complicated as the systems grow more complex; critical processing may not be suitable for interrupting, with multiple possible sources of interrupts polling each is costly and with large numbers of simultaneous processes, multilevel interrupts may be required.
+
+        \newpage
+        \subsubsection{DMA}
+
+            DMA is discussed in detail in response to question \ref{DMA}, but the simple description is that DMA is a method of directly linking hardware controllers to memory to remove the CPU from the I/O operation, deferring the execution to the specialised DMA controller that handles the transfer.
+
+    \subsection{From the point of view of the application programmer, data may be read from a device in a blocking, non-blocking or asynchronous fashion. Using a keyboard as an example device, describe the expected behaviour in each case.}
+
+        \subsubsection{Blocking}
+
+            In the blocking case, when a process triggers the I/O request, it makes the system call, then pauses all operation until the system call completes. For a keyboard, a blocking operation could be though of like a press start to continue operation: the process runs, makes the request for an input from the keyboard and ceases until the keyboard key is pressed at which point the process can resume.
+
+        \subsubsection{Non-Blocking}
+
+            For non-blocking, the process may need to continue while still responding to user input. The I/O system call returns as much as it can in the window of time, and allow the process to continue. The operation is similar to polling but at the application rather than kernel level. Again considering the keyboard, the editor I'm typing this in is performing non-blocking I/O with the keypresses, when the keyboard is not in use it needs to spell-check, display the mouse pointer and so on, but as soon as a key is pressed I want to see it on screen.
+
+        \subsubsection{Asynchronous}
+
+            Asynchronous operations is where the process explicitly starts the I/O operation and then continues with its work. When the I/O operation is completed it will signal the process in some way. For keyboard related operations, the main thing this seems to be useful for is in games, where the need to constantly update state at a regular interval requires asynchronously reading user input. The game needs to update its state, so it asks for input from the keyboard executes its state update then reads the input from keyboard which it can then respond to.
+
+
 
 
 
