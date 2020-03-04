@@ -554,6 +554,55 @@
 
             Asynchronous operations is where the process explicitly starts the I/O operation and then continues with its work. When the I/O operation is completed it will signal the process in some way. For keyboard related operations, the main thing this seems to be useful for is in games, where the need to constantly update state at a regular interval requires asynchronously reading user input. The game needs to update its state, so it asks for input from the keyboard executes its state update then reads the input from keyboard which it can then respond to.
 
+    \subsection{File systems comprise a directory service and a storage service.}
+
+        \subsubsection{What are the two main functions of the directory service?}
+
+            The directory service maps names to file identifiers and handles access and existence control. This involves managing the structure, but not the data, of the file system. This is the logical part of the file system, that is presented to the users, rather than the storage service which interacts with the I/O Controllers and devices.
+
+        \subsubsection{What is a directory hierarchy? Explain your answer with the aid of a diagram.}
+
+            A directory is a method to aid translating user names to the location of the file on disk. They allow increased efficiency in file access, extra convenience for the users in terms of naming and grouping.
+
+            This could just be a single level structure, with all user files placed in this directory, or you can nest directories to create double or multiple layer directory structure.
+
+            A directory hierarchy is this arbitrary height tree-like structure that allows users to define their own sub directories and organise their files as they wish.
+
+        \begin{figure}[ht]
+            \centering
+            \includegraphics[width=0.5\linewidth]{"media/tree-directory"}
+            \caption{Directory Hierarchy}
+        \end{figure}
+
+        \subsubsection{What information is held in file meta-data?}
+
+            Files have names, typically several:
+
+            \begin{itemize}
+                \item System File Identifier (SFID): A unique integer value / identifier used for a given file by the file system, not the user
+                \item Human Name: The user given name for a file
+                \item User File Identifier (UFID): An optional name that may be used to indicate open files in an application.
+            \end{itemize}
+
+            The mapping between a SFID and Human Name is held in the directory.
+
+            The SFID is mapped, using an OS specific method, maps to a metadata table, which contains a file control block which contains the metadata for a file. This metadata can consist of
+
+            \begin{itemize}
+                \item Location: pointer to file location on device
+                \item Size: current file size
+                \item Type: the type of the file, which is required based on how the system may support different types like text or binary.
+                \item Protection: read/write/execute permissions for a file
+                \item   Time, date, and user identification: data for protection, security and usage
+            \end{itemize}
+
+        \subsubsection{What is a hard link? Does file system support for hard links place any restrictions on the location of file meta-data?}
+
+            A hard link is a mapping from a name to the actual data. The naming is typically used when file systems support multiple hard links to a single file. For unix, a hard link is a link to an inode of the file system, which is the location of the file metadata. As such, all hardlinks point to the same metadata location, and there is only one set of metadata for all existing hard links.
+
+        \subsubsection{What is a soft (or symbolic) link? Does file system support for soft links place any restrictions on the location of file meta-data?}
+
+
 
 
 
