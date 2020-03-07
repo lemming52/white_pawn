@@ -52,7 +52,7 @@ func TestQuestionTwo(t *testing.T) {
 	if !testDecks(deck, result) {
 		t.Error("decks don't match")
 	}
-
+	t.Error("decks don't match")
 }
 
 func testDecks(a, b []*Card) bool {

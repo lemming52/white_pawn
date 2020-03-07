@@ -59,17 +59,12 @@ func (c Card) Print() string {
 
 // QuestionTwo performs a shuffle of a deck of cards, using a perfect random number generator
 func QuestionTwo(deck []*Card, position int) []*Card {
-	/*
-		There are 52! permutations of a deck, which are assembled by choosing randomly without replacement from the initial deck
-	*/
-	if position == 0 {
-		return deck
+	for i := len(deck) - 1; i > 1; i-- {
+		k := random(i)
+		temp := deck[k]
+		deck[k] = deck[i]
+		deck[i] = temp
 	}
-	deck = QuestionTwo(deck, position-1)
-	randomPosition := random(position)
-	temp := deck[randomPosition]
-	deck[randomPosition] = deck[position]
-	deck[position] = temp
 	return deck
 }
 
