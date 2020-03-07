@@ -66,14 +66,14 @@ func QuestionTwo(deck []*Card, position int) []*Card {
 		return deck
 	}
 	deck = QuestionTwo(deck, position-1)
-	randomPosition := Random(position)
+	randomPosition := random(position)
 	temp := deck[randomPosition]
 	deck[randomPosition] = deck[position]
 	deck[position] = temp
 	return deck
 }
 
-func InitDeck() []*Card {
+func initDeck() []*Card {
 	deck := []*Card{}
 	for _, suit := range []int{Spade, Club, Diamond, Heart} {
 		for i := 1; i < 14; i++ {
@@ -83,7 +83,13 @@ func InitDeck() []*Card {
 	return deck
 }
 
-// Random returns a random int between the 0 and x
-func Random(x int) int64 {
+// random returns a random int between the 0 and x
+func random(x int) int64 {
 	return rand.Int63n(int64(x))
+}
+
+// QuestionThree generates a random subset of the provided set
+func QuestionThree(set []int, count int) {
+	/**/
+
 }

@@ -37,7 +37,7 @@ func TestQuestionOne(t *testing.T) {
 }
 
 func TestQuestionTwo(t *testing.T) {
-	deck := InitDeck()
+	deck := initDeck()
 	fmt.Println("\ninitial")
 	for _, card := range deck {
 		fmt.Print(card.Print())
