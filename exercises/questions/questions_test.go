@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -33,4 +34,41 @@ func TestQuestionOne(t *testing.T) {
 			assert.Equal(t, tt.expected, result)
 		})
 	}
+}
+
+func TestQuestionTwo(t *testing.T) {
+	deck := InitDeck()
+	fmt.Println("\ninitial")
+	for _, card := range deck {
+		fmt.Print(card.Print())
+	}
+	result := QuestionTwo(deck)
+
+	fmt.Println("\nshuffled")
+	for _, card := range result {
+		fmt.Print(card.Print())
+	}
+	assert.Equal(t, len(deck), len(result))
+	if !testDecks(deck, result) {
+		t.Error("decks don't match")
+	}
+
+}
+
+func testDecks(a, b []Card) bool {
+	for _, card := range a {
+		if !checkCard(card, b) {
+			return false
+		}
+	}
+	return true
+}
+
+func checkCard(card Card, deck []Card) bool {
+	for _, c := range deck {
+		if (card.suit == c.suit) && (card.value == c.value) {
+			return true
+		}
+	}
+	return false
 }

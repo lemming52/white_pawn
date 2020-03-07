@@ -1,5 +1,10 @@
 package questions
 
+import (
+	"fmt"
+	"math/rand"
+)
+
 // QuestionOne performs addition without using arithmetic operators
 func QuestionOne(x, y int64) int64 {
 	/*
@@ -23,4 +28,60 @@ func QuestionOne(x, y int64) int64 {
 	addition := x ^ y
 	carry := (x & y) << 1
 	return QuestionOne(addition, carry)
+}
+
+const (
+	Spade = iota
+	Club
+	Diamond
+	Heart
+)
+
+type Card struct {
+	suit  int
+	value int
+}
+
+func (c Card) Print() string {
+	switch c.suit {
+	case Spade:
+		return fmt.Sprintf("S%d ", c.value)
+	case Club:
+		return fmt.Sprintf("C%d ", c.value)
+	case Diamond:
+		return fmt.Sprintf("D%d ", c.value)
+	case Heart:
+		return fmt.Sprintf("H%d ", c.value)
+	default:
+		return "nope"
+	}
+}
+
+// QuestionTwo performs a shuffle of a deck of cards, using a perfect random number generator
+func QuestionTwo(deck []Card) []Card {
+	/*
+		There are 52! permutations of a deck, which are assembled by choosing randomly without replacement from the initial deck
+	*/
+	result := []Card{}
+	for i := 0; i < 52; i++ {
+		randomPosition := Random(len(deck))
+		result = append(result, deck[randomPosition])
+		deck = append(deck[:randomPosition], deck[randomPosition+1:]...)
+	}
+	return result
+}
+
+func InitDeck() []Card {
+	deck := []Card{}
+	for _, suit := range []int{Spade, Club, Diamond, Heart} {
+		for i := 1; i < 14; i++ {
+			deck = append(deck, Card{suit: suit, value: i})
+		}
+	}
+	return deck
+}
+
+// Random returns a random int between the 0 and x
+func Random(x int) int64 {
+	return rand.Int63n(int64(x))
 }

@@ -6,6 +6,5 @@ import (
 )
 
 func main() {
-	x := questions.QuestionOne(1, 2)
-	fmt.Println(x)
+	fmt.Println("placeholder")
 }
