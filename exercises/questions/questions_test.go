@@ -72,3 +72,11 @@ func checkCard(card *Card, deck []*Card) bool {
 	}
 	return false
 }
+
+func TestQuestionThree(t *testing.T) {
+	test := []int{1, 4, 6, 7, 8}
+	fmt.Println(QuestionThree(test, 3))
+	fmt.Println(QuestionThree(test, 3))
+	fmt.Println(QuestionThree(test, 3))
+	t.Error("fail")
+}

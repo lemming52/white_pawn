@@ -89,7 +89,15 @@ func random(x int) int64 {
 }
 
 // QuestionThree generates a random subset of the provided set
-func QuestionThree(set []int, count int) {
-	/**/
+func QuestionThree(set []int, count int) []int {
+	subset := make([]int, count)
+	copy(subset, set[:count])
 
+	for i := count; i < len(set); i++ {
+		random := random(len(set))
+		if random < int64(count) {
+			subset[random] = set[i]
+		}
+	}
+	return subset
 }
