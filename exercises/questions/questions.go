@@ -58,24 +58,26 @@ func (c Card) Print() string {
 }
 
 // QuestionTwo performs a shuffle of a deck of cards, using a perfect random number generator
-func QuestionTwo(deck []Card) []Card {
+func QuestionTwo(deck []*Card, position int) []*Card {
 	/*
 		There are 52! permutations of a deck, which are assembled by choosing randomly without replacement from the initial deck
 	*/
-	result := []Card{}
-	for i := 0; i < 52; i++ {
-		randomPosition := Random(len(deck))
-		result = append(result, deck[randomPosition])
-		deck = append(deck[:randomPosition], deck[randomPosition+1:]...)
+	if position == 0 {
+		return deck
 	}
-	return result
+	deck = QuestionTwo(deck, position-1)
+	randomPosition := Random(position)
+	temp := deck[randomPosition]
+	deck[randomPosition] = deck[position]
+	deck[position] = temp
+	return deck
 }
 
-func InitDeck() []Card {
-	deck := []Card{}
+func InitDeck() []*Card {
+	deck := []*Card{}
 	for _, suit := range []int{Spade, Club, Diamond, Heart} {
 		for i := 1; i < 14; i++ {
-			deck = append(deck, Card{suit: suit, value: i})
+			deck = append(deck, &Card{suit: suit, value: i})
 		}
 	}
 	return deck

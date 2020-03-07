@@ -42,7 +42,7 @@ func TestQuestionTwo(t *testing.T) {
 	for _, card := range deck {
 		fmt.Print(card.Print())
 	}
-	result := QuestionTwo(deck)
+	result := QuestionTwo(deck, 51)
 
 	fmt.Println("\nshuffled")
 	for _, card := range result {
@@ -55,7 +55,7 @@ func TestQuestionTwo(t *testing.T) {
 
 }
 
-func testDecks(a, b []Card) bool {
+func testDecks(a, b []*Card) bool {
 	for _, card := range a {
 		if !checkCard(card, b) {
 			return false
@@ -64,7 +64,7 @@ func testDecks(a, b []Card) bool {
 	return true
 }
 
-func checkCard(card Card, deck []Card) bool {
+func checkCard(card *Card, deck []*Card) bool {
 	for _, c := range deck {
 		if (card.suit == c.suit) && (card.value == c.value) {
 			return true
