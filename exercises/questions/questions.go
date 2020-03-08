@@ -137,3 +137,48 @@ type IntMod struct {
 func (i *IntMod) Get(j int64) bool {
 	return bits.OnesCount(uint((1<<j)&i.value)) > 0
 }
+
+/*
+QuestionFive
+
+Given an array of A and B, build the longest sublist containing an equal
+number of letters and numbers
+*/
+func QuestionFive(list []string) []string {
+	/*
+		Sub string must be even in length
+		brute force by checking all subarrays, with some optimisations to allow for early exit
+
+		complexity:
+	*/
+	var max []string
+	for i := len(list) / 2; i > 0; i-- {
+		subLength := i * 2
+		if CheckSubLength(list, subLength) != nil {
+			return CheckSubLength(list, subLength)
+		}
+	}
+	return max
+}
+
+func CheckSubLength(list []string, length int) []string {
+	for i := 0; i <= len(list)-length; i++ {
+		if CheckEven(list[i : i+length]) {
+			return list[i : i+length]
+		}
+	}
+	return nil
+}
+
+func CheckEven(list []string) bool {
+	aCount := 0
+	bCount := 0
+	for _, element := range list {
+		if element == "A" {
+			aCount++
+		} else {
+			bCount++
+		}
+	}
+	return aCount == bCount
+}

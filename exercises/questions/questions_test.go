@@ -128,3 +128,37 @@ func initIntModList(N, m int64) []*IntMod {
 	}
 	return list
 }
+
+func TestQuestionFive(t *testing.T) {
+	tests := []struct {
+		name string
+		full []string
+		sub  []string
+	}{
+		{
+			name: "base",
+			full: []string{"A", "B", "A"},
+			sub:  []string{"A", "B"},
+		}, {
+			name: "long",
+			full: []string{"A", "B", "A", "A", "B", "B", "B", "A", "B"},
+			sub:  []string{"A", "B", "A", "A", "B", "B", "B", "A"},
+		}, {
+			name: "split",
+			full: []string{"A", "B", "A", "A", "A", "A", "A", "B", "B"},
+			sub:  []string{"A", "A", "B", "B"},
+		}, {
+			name: "nil",
+			full: []string{"A", "A", "A"},
+			sub:  nil,
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionFive(tt.full)
+			assert.Equal(t, tt.sub, result)
+		})
+	}
+}
