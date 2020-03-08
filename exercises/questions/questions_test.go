@@ -52,7 +52,6 @@ func TestQuestionTwo(t *testing.T) {
 	if !testDecks(deck, result) {
 		t.Error("decks don't match")
 	}
-	t.Error("decks don't match")
 }
 
 func testDecks(a, b []*Card) bool {
@@ -78,5 +77,46 @@ func TestQuestionThree(t *testing.T) {
 	fmt.Println(QuestionThree(test, 3))
 	fmt.Println(QuestionThree(test, 3))
 	fmt.Println(QuestionThree(test, 3))
-	t.Error("fail")
+}
+
+func TestQuestionFour(t *testing.T) {
+	tests := []struct {
+		name string
+		N    int64
+		m    int64
+	}{
+		{
+			name: "small",
+			N:    4,
+			m:    1,
+		}, {
+			name: "medium",
+			N:    8,
+			m:    4,
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			list := initIntModList(tt.N, tt.m)
+			result := QuestionFour(list)
+			assert.Equal(t, tt.m, result)
+
+			for _, i := range list {
+				fmt.Print(i.value, " ", i.Get(1))
+			}
+		})
+	}
+}
+
+func initIntModList(N, m int64) []*IntMod {
+	list := []*IntMod{}
+	for i := int64(0); i < N; i++ {
+		if i == m {
+			continue
+		}
+		list = append(list, &IntMod{i})
+	}
+	return list
 }

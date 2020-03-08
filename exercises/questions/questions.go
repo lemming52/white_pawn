@@ -2,6 +2,7 @@ package questions
 
 import (
 	"fmt"
+	"math/bits"
 	"math/rand"
 )
 
@@ -95,4 +96,31 @@ func QuestionThree(set []int, count int) []int {
 		}
 	}
 	return subset
+}
+
+// Question Four,
+func QuestionFour(list []*IntMod) int64 {
+	/*
+		An array contains integers from 0 to N, except one is missing
+		the integers cannot be accessed directly, but only by the jth bit of array[i]
+		find the missing integer in O(n) time
+
+		With a bitwise representation, can find missing number by xoring across all elements
+		however, can only access one bit
+
+		This isnt what's asked for, but is kinda nifty
+	*/
+	value := int64(0)
+	for _, i := range list {
+		value = value ^ i.value
+	}
+	return value
+}
+
+type IntMod struct {
+	value int64
+}
+
+func (i *IntMod) Get(j int64) bool {
+	return bits.OnesCount(uint((1<<j)&i.value)) > 0
 }
