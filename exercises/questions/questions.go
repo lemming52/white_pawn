@@ -149,16 +149,30 @@ func QuestionFive(list []string) []string {
 		Sub string must be even in length
 		brute force by checking all subarrays, with some optimisations to allow for early exit
 
-		complexity:
+		complexity: N3
 	*/
-	var max []string
-	for i := len(list) / 2; i > 0; i-- {
-		subLength := i * 2
-		if CheckSubLength(list, subLength) != nil {
-			return CheckSubLength(list, subLength)
+	var subArray []string
+	differences := map[int]int{0: -1}
+	aCount := 0
+	bCount := 0
+	for i, element := range list {
+		if element == "A" {
+			aCount++
+		} else {
+			bCount++
+		}
+		difference := aCount - bCount
+		marker, ok := differences[difference]
+		if !ok {
+			differences[difference] = i
+		} else {
+			subLength := i - marker
+			if len(subArray) < subLength {
+				subArray = list[marker+1 : i+1]
+			}
 		}
 	}
-	return max
+	return subArray
 }
 
 func CheckSubLength(list []string, length int) []string {
