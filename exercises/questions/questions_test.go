@@ -93,6 +93,14 @@ func TestQuestionFour(t *testing.T) {
 			name: "medium",
 			N:    8,
 			m:    4,
+		}, {
+			name: "large",
+			N:    32,
+			m:    24,
+		}, {
+			name: "huge",
+			N:    645,
+			m:    325,
 		},
 	}
 	for _, test := range tests {
