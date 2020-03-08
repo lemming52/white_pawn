@@ -174,25 +174,3 @@ func QuestionFive(list []string) []string {
 	}
 	return subArray
 }
-
-func CheckSubLength(list []string, length int) []string {
-	for i := 0; i <= len(list)-length; i++ {
-		if CheckEven(list[i : i+length]) {
-			return list[i : i+length]
-		}
-	}
-	return nil
-}
-
-func CheckEven(list []string) bool {
-	aCount := 0
-	bCount := 0
-	for _, element := range list {
-		if element == "A" {
-			aCount++
-		} else {
-			bCount++
-		}
-	}
-	return aCount == bCount
-}
