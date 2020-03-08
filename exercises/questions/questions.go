@@ -99,22 +99,35 @@ func QuestionThree(set []int, count int) []int {
 }
 
 // Question Four,
-func QuestionFour(list []*IntMod) int64 {
+func QuestionFour(list []*IntMod, column int64) int64 {
 	/*
 		An array contains integers from 0 to N, except one is missing
 		the integers cannot be accessed directly, but only by the jth bit of array[i]
 		find the missing integer in O(n) time
 
-		With a bitwise representation, can find missing number by xoring across all elements
-		however, can only access one bit
-
-		This isnt what's asked for, but is kinda nifty
+		the missing number will be revealed based on
 	*/
-	value := int64(0)
-	for _, i := range list {
-		value = value ^ i.value
+	if column >= bits.UintSize {
+		return 0
 	}
-	return value
+
+	zeroes := []*IntMod{}
+	ones := []*IntMod{}
+
+	for _, i := range list {
+		if i.Get(column) {
+			// column bit is 1
+			ones = append(ones, i)
+		} else {
+			zeroes = append(zeroes, i)
+		}
+	}
+
+	if len(zeroes) > len(ones) {
+		return (QuestionFour(ones, column+1) << 1) | 1
+	} else {
+		return (QuestionFour(zeroes, column+1) << 1) | 0
+	}
 }
 
 type IntMod struct {

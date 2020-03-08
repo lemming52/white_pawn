@@ -108,7 +108,7 @@ func TestQuestionFour(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			list := initIntModList(tt.N, tt.m)
-			result := QuestionFour(list)
+			result := QuestionFour(list, 0)
 			assert.Equal(t, tt.m, result)
 
 			for _, i := range list {
