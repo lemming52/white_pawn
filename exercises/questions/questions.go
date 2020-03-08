@@ -174,3 +174,36 @@ func QuestionFive(list []string) []string {
 	}
 	return subArray
 }
+
+/*
+QuestionSix
+
+Write a method to count the total number of 2s between 0 and N inclusive
+i.e. 22 -> 2, 12, 20, 21, 22 -> 6
+*/
+func QuestionSix(N int) int {
+	count := 0
+	for i := 0; i < N+1; i++ {
+		count = count + CountTwos(i)
+	}
+	return count
+}
+
+func CountTwos(x int) int {
+	/*
+		Count the number of twos in a number
+		thinking in terms of base 10
+	*/
+	power := 1
+	count := 0
+	for power < x {
+		digit := x / power
+		fmt.Println(count, x, digit, power)
+
+		if digit == 2 {
+			count++
+		}
+		power = power * 10
+	}
+	return count
+}

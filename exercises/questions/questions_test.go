@@ -162,3 +162,25 @@ func TestQuestionFive(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionSix(t *testing.T) {
+	tests := []struct {
+		name     string
+		N        int
+		expected int
+	}{
+		{
+			name:     "base",
+			N:        22,
+			expected: 6,
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionSix(tt.N)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
