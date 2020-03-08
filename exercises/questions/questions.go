@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/bits"
 	"math/rand"
-	"strconv"
 )
 
 // QuestionOne performs addition without using arithmetic operators
@@ -196,11 +195,11 @@ func CountTwos(x int) int {
 		thinking in terms of base 10
 	*/
 	count := 0
-	value := strconv.Itoa(x)
-	for _, c := range value {
-		if c == rune(50) {
+	for x > 0 {
+		if (x % 10) == 2 {
 			count++
 		}
+		x = x / 10
 	}
 
 	return count
