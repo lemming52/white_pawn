@@ -2,8 +2,10 @@ package questions
 
 import (
 	"fmt"
+	"math"
 	"math/bits"
 	"math/rand"
+	"strconv"
 )
 
 // QuestionOne performs addition without using arithmetic operators
@@ -183,24 +185,26 @@ i.e. 22 -> 2, 12, 20, 21, 22 -> 6
 */
 func QuestionSix(N int) int {
 	count := 0
-	for i := 0; i < N+1; i++ {
-		count = count + CountTwos(i)
+	for i := 0; i < len(strconv.Itoa(N)); i++ {
+		count = count + CountTwosAtDigit(N, i)
 	}
 	return count
 }
 
-func CountTwos(x int) int {
-	/*
-		Count the number of twos in a number
-		thinking in terms of base 10
-	*/
-	count := 0
-	for x > 0 {
-		if (x % 10) == 2 {
-			count++
-		}
-		x = x / 10
-	}
+func CountTwosAtDigit(N, d int) int {
+	power := int(math.Pow10(d))
+	next := power * 10
+	right := N % power
 
-	return count
+	roundDown := N - N%next
+	roundUp := roundDown + next
+
+	digit := (N / power) % 10
+	if digit < 2 {
+		return roundDown / 10
+	} else if digit == 2 {
+		return roundDown/10 + right + 1
+	} else {
+		return roundUp / 10
+	}
 }

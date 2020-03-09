@@ -173,6 +173,26 @@ func TestQuestionSix(t *testing.T) {
 			name:     "base",
 			N:        22,
 			expected: 6,
+		}, {
+			name:     "other",
+			N:        25,
+			expected: 9,
+		}, {
+			name:     "zero",
+			N:        1,
+			expected: 0,
+		}, {
+			name:     "large",
+			N:        1000,
+			expected: 300,
+		}, {
+			name:     "odd",
+			N:        245,
+			expected: 101,
+		}, {
+			name:     "big",
+			N:        2456,
+			expected: 1253,
 		},
 	}
 	for _, test := range tests {
