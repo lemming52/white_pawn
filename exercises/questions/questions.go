@@ -63,7 +63,7 @@ func (c Card) Print() string {
 
 // QuestionTwo performs a shuffle of a deck of cards, using a perfect random number generator
 func QuestionTwo(deck []*Card, position int) []*Card {
-	for i := len(deck) - 1; i > 1; i-- {
+	for i := len(deck) - 1; i > 0; i-- {
 		k := random(i)
 		temp := deck[k]
 		deck[k] = deck[i]
