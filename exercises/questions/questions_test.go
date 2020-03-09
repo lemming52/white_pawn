@@ -207,10 +207,11 @@ func TestQuestionSix(t *testing.T) {
 
 func TestQuestionSeven(t *testing.T) {
 	tests := []struct {
-		name        string
-		frequencies map[string]int
-		synonyms    [][]string
-		expected    map[string]int
+		name            string
+		frequencies     map[string]int
+		synonyms        [][]string
+		expected        map[string]int
+		expectedEntries int
 	}{
 		{
 			name: "base",
@@ -225,7 +226,9 @@ func TestQuestionSeven(t *testing.T) {
 			expected: map[string]int{
 				"A": 4,
 				"B": 2,
+				"a": 4,
 			},
+			expectedEntries: 2,
 		}, {
 			name: "names",
 			frequencies: map[string]int{
@@ -242,9 +245,14 @@ func TestQuestionSeven(t *testing.T) {
 				[]string{"Kris", "Christopher"},
 			},
 			expected: map[string]int{
-				"John":  27,
-				"Chris": 36,
+				"John":        27,
+				"Johnny":      27,
+				"Jon":         27,
+				"Kris":        36,
+				"Chris":       36,
+				"Christopher": 36,
 			},
+			expectedEntries: 2,
 		},
 	}
 	for _, test := range tests {
@@ -252,7 +260,12 @@ func TestQuestionSeven(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			result := QuestionSeven(tt.frequencies, tt.synonyms)
-			assert.Equal(t, tt.expected, result)
+			assert.Equal(t, tt.expectedEntries, len(result))
+			for k, v := range result {
+				entry, ok := tt.expected[k]
+				assert.Equal(t, ok, true)
+				assert.Equal(t, entry, v)
+			}
 		})
 	}
 }

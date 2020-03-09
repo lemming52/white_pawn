@@ -6,6 +6,7 @@ import (
 	"math/bits"
 	"math/rand"
 	"strconv"
+	"strings"
 )
 
 // QuestionOne performs addition without using arithmetic operators
@@ -219,30 +220,103 @@ func QuestionSeven(freq map[string]int, synonyms [][]string) map[string]int {
 	/*
 		key to this is the data structure we use for converting from synonyms
 	*/
-	results := map[string]int{}
-	synonymMap := SynonymMap(synonyms)
-	for key, n := range freq {
-		master, ok := synonymMap[key]
-		if ok {
-			count, ok := results[master]
-			if ok {
-				results[master] = count + n
-			} else {
-				results[master] = n
-			}
-		} else {
-			results[key] = n
-		}
-	}
-	return results
+	g := InitGraph(freq)
+	AddSynonyms(g, synonyms)
+	return g.CountFrequencies()
 }
 
-// Synonym map constructs a map of synonyms choosing the first as the parent synonym,
-// linking all synonyms to the 'true' entry
-func SynonymMap(synonyms [][]string) map[string]string {
-	synonymMap := map[string]string{}
-	for _, set := range synonyms {
-		synonymMap[set[1]] = set[0]
+func InitGraph(freq map[string]int) *FrequencyGraph {
+	g := &FrequencyGraph{nodes: map[string]*FrequencyNode{}}
+	for k, v := range freq {
+		g.AddNode(&FrequencyNode{
+			name: k,
+			freq: v,
+		})
 	}
-	return synonymMap
+	return g
+}
+
+func AddSynonyms(graph *FrequencyGraph, synonyms [][]string) {
+	for _, pair := range synonyms {
+		graph.AddEdge(pair[0], pair[1])
+	}
+}
+
+type FrequencyGraph struct {
+	nodes map[string]*FrequencyNode
+}
+
+func (g *FrequencyGraph) AddNode(node *FrequencyNode) {
+	g.nodes[node.name] = node
+}
+
+func (g *FrequencyGraph) AddEdge(a, b string) {
+	aNode, ok := g.nodes[a]
+	if !ok {
+		aNode = &FrequencyNode{
+			name: a,
+			freq: 0,
+		}
+		g.AddNode(aNode)
+	}
+	bNode, ok := g.nodes[b]
+	if !ok {
+		bNode = &FrequencyNode{
+			name: b,
+			freq: 0,
+		}
+		g.AddNode(bNode)
+	}
+	aNode.AddChild(bNode)
+}
+
+func (g *FrequencyGraph) Print() string {
+	nodes := []string{}
+	for k, node := range g.nodes {
+		nodes = append(nodes, fmt.Sprintf("%s: %s", k, node.Print()))
+	}
+	return strings.Join(nodes, "\n")
+}
+
+func (g *FrequencyGraph) CountFrequencies() map[string]int {
+	fmt.Println(g.Print())
+	counts := map[string]int{}
+	for _, node := range g.nodes {
+		fmt.Println(node.visited, node.name, node.freq)
+		if !node.visited {
+			counts[node.name] = node.CountFrequencies()
+		}
+	}
+	return counts
+}
+
+type FrequencyNode struct {
+	name     string
+	freq     int
+	children []*FrequencyNode
+	visited  bool
+}
+
+func (n *FrequencyNode) AddChild(node *FrequencyNode) {
+	n.children = append(n.children, node)
+	node.children = append(node.children, n)
+}
+
+func (n *FrequencyNode) CountFrequencies() int {
+	n.visited = true
+	count := n.freq
+	for _, child := range n.children {
+		if !child.visited {
+			count = count + child.CountFrequencies()
+		}
+	}
+	return count
+}
+
+func (n *FrequencyNode) Print() string {
+	names := []string{}
+	for _, child := range n.children {
+		names = append(names, child.name)
+	}
+	return fmt.Sprintf("%s %d %t children: %s", n.name, n.freq, n.visited, strings.Join(names, ","))
 }
