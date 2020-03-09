@@ -208,3 +208,41 @@ func CountTwosAtDigit(N, d int) int {
 		return roundUp / 10
 	}
 }
+
+/*
+QuestionSeven
+
+Given a list of keys and frequencies, and a separate list of synonym key lists
+construct a true frequency list
+*/
+func QuestionSeven(freq map[string]int, synonyms [][]string) map[string]int {
+	/*
+		key to this is the data structure we use for converting from synonyms
+	*/
+	results := map[string]int{}
+	synonymMap := SynonymMap(synonyms)
+	for key, n := range freq {
+		master, ok := synonymMap[key]
+		if ok {
+			count, ok := results[master]
+			if ok {
+				results[master] = count + n
+			} else {
+				results[master] = n
+			}
+		} else {
+			results[key] = n
+		}
+	}
+	return results
+}
+
+// Synonym map constructs a map of synonyms choosing the first as the parent synonym,
+// linking all synonyms to the 'true' entry
+func SynonymMap(synonyms [][]string) map[string]string {
+	synonymMap := map[string]string{}
+	for _, set := range synonyms {
+		synonymMap[set[1]] = set[0]
+	}
+	return synonymMap
+}
