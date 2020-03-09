@@ -239,7 +239,7 @@ func TestQuestionSeven(t *testing.T) {
 				[]string{"John", "Jon"},
 				[]string{"John", "Johnny"},
 				[]string{"Chris", "Kris"},
-				[]string{"Chris", "Christopher"},
+				[]string{"Kris", "Christopher"},
 			},
 			expected: map[string]int{
 				"John":  27,
