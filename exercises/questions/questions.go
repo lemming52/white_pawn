@@ -356,28 +356,6 @@ func QuestionEight(staff []*CircusPerson) []*CircusPerson {
 		}
 	}
 	return staff
-
-	/*
-		sort.Slice(height, func(i, j int) bool {
-			return weight[i].height < weight[j].height
-		})
-		fmt.Println(weight, height, staff)
-
-		for i := 0; i < len(staff); i++ {
-			for j := i; j < len(staff); j++ {
-				if height[i] == weight[j] {
-					resultHeight = append(resultHeight, height[i])
-					break
-				}
-			}
-		}
-
-		if len(resultWeight) > len(resultHeight) {
-			fmt.Println("MARCO")
-			return resultWeight
-		}
-		return resultHeight
-	*/
 }
 
 type CircusPerson struct {

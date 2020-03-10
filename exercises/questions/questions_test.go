@@ -328,6 +328,33 @@ func TestQuestionEight(t *testing.T) {
 				&CircusPerson{70, 150},
 				&CircusPerson{75, 190},
 			},
+		}, {
+			name: "absurd",
+			staff: []*CircusPerson{
+				&CircusPerson{69, 100},
+				&CircusPerson{70, 99},
+				&CircusPerson{56, 180},
+				&CircusPerson{75, 190},
+				&CircusPerson{60, 102},
+				&CircusPerson{68, 101},
+			},
+			tower: []*CircusPerson{
+				&CircusPerson{56, 180},
+				&CircusPerson{75, 190},
+			},
+		}, {
+			name: "breaking",
+			staff: []*CircusPerson{
+				&CircusPerson{1, 100},
+				&CircusPerson{2, 34},
+				&CircusPerson{3, 35},
+				&CircusPerson{4, 36},
+			},
+			tower: []*CircusPerson{
+				&CircusPerson{2, 34},
+				&CircusPerson{3, 35},
+				&CircusPerson{4, 36},
+			},
 		},
 	}
 	for _, test := range tests {
