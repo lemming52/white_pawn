@@ -5,6 +5,7 @@ import (
 	"math"
 	"math/bits"
 	"math/rand"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -319,4 +320,67 @@ func (n *FrequencyNode) Print() string {
 		names = append(names, child.name)
 	}
 	return fmt.Sprintf("%s %d %t children: %s", n.name, n.freq, n.visited, strings.Join(names, ","))
+}
+
+/*
+QuestionEight
+
+Given a set of people with height and weight, build the highest tower of people
+lighter and shorter than the people below
+*/
+func QuestionEight(staff []*CircusPerson) []*CircusPerson {
+	/*
+		Could start by sorting the set by height and weight, then incrementing across both lists.
+		Might need to increment weight first and hieght first to avoid edge cases
+	*/
+	maxLength := len(staff)
+	weight := make([]*CircusPerson, maxLength)
+	height := make([]*CircusPerson, maxLength)
+	copy(weight, staff)
+	copy(height, staff)
+
+	sort.Slice(staff, func(i, j int) bool {
+		return staff[i].weight < staff[j].weight
+	})
+
+	for _, s := range staff {
+		fmt.Println(s.weight, s.height)
+	}
+
+	for i := 0; i < len(staff)-1; {
+		fmt.Println(staff, i)
+		if staff[i].height < staff[i+1].height {
+			i++
+		} else {
+			staff = append(staff[0:i+1], staff[i+2:]...)
+		}
+	}
+	return staff
+
+	/*
+		sort.Slice(height, func(i, j int) bool {
+			return weight[i].height < weight[j].height
+		})
+		fmt.Println(weight, height, staff)
+
+		for i := 0; i < len(staff); i++ {
+			for j := i; j < len(staff); j++ {
+				if height[i] == weight[j] {
+					resultHeight = append(resultHeight, height[i])
+					break
+				}
+			}
+		}
+
+		if len(resultWeight) > len(resultHeight) {
+			fmt.Println("MARCO")
+			return resultWeight
+		}
+		return resultHeight
+	*/
+}
+
+type CircusPerson struct {
+	weight int
+	height int
 }

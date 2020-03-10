@@ -269,3 +269,74 @@ func TestQuestionSeven(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionEight(t *testing.T) {
+	tests := []struct {
+		name  string
+		staff []*CircusPerson
+		tower []*CircusPerson
+	}{
+		{
+			name: "base",
+			staff: []*CircusPerson{
+				&CircusPerson{65, 100},
+				&CircusPerson{70, 150},
+				&CircusPerson{56, 90},
+				&CircusPerson{75, 190},
+				&CircusPerson{60, 95},
+				&CircusPerson{68, 110},
+			},
+			tower: []*CircusPerson{
+				&CircusPerson{56, 90},
+				&CircusPerson{60, 95},
+				&CircusPerson{65, 100},
+				&CircusPerson{68, 110},
+				&CircusPerson{70, 150},
+				&CircusPerson{75, 190},
+			},
+		}, {
+			name: "height",
+			staff: []*CircusPerson{
+				&CircusPerson{65, 80},
+				&CircusPerson{70, 150},
+				&CircusPerson{56, 90},
+				&CircusPerson{75, 190},
+				&CircusPerson{60, 95},
+				&CircusPerson{68, 110},
+			},
+			tower: []*CircusPerson{
+				&CircusPerson{56, 90},
+				&CircusPerson{60, 95},
+				&CircusPerson{68, 110},
+				&CircusPerson{70, 150},
+				&CircusPerson{75, 190},
+			},
+		}, {
+			name: "weight",
+			staff: []*CircusPerson{
+				&CircusPerson{69, 100},
+				&CircusPerson{70, 150},
+				&CircusPerson{56, 90},
+				&CircusPerson{75, 190},
+				&CircusPerson{60, 95},
+				&CircusPerson{68, 110},
+			},
+			tower: []*CircusPerson{
+				&CircusPerson{56, 90},
+				&CircusPerson{60, 95},
+				&CircusPerson{68, 110},
+				&CircusPerson{70, 150},
+				&CircusPerson{75, 190},
+			},
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionEight(tt.staff)
+			assert.Equal(t, tt.tower, result)
+		})
+	}
+
+}
