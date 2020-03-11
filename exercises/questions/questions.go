@@ -378,6 +378,7 @@ QuestionNine
 Design an algorithm to find the kth number such that the only prime factors are
 3, 5, 7. 3, 5, 7 need not be factors but no other prime
 */
+/*
 func QuestionNine(k int) []int {
 	results, primes := []int{}, []int{}
 	factor := 1
@@ -387,6 +388,74 @@ func QuestionNine(k int) []int {
 		factor++
 	}
 	return results
+}
+*/
+
+func QuestionNine(k int) []int {
+	results := []int{1}
+	counts := []int{0, 0, 0}
+	for i := 0; i < k; i++ {
+		nextSet := genNumbers(counts)
+		for _, num := range nextSet {
+			fmt.Println(num.value)
+		}
+		value := minNumber(nextSet)
+		switch value.incrementedFactor {
+		case 3:
+			counts[0]++
+		case 5:
+			counts[1]++
+		case 7:
+			counts[2]++
+		}
+		fmt.Println(counts)
+		results = append(results, value.value)
+	}
+	return results
+}
+
+func genNumbers(counts []int) []*FactorValue {
+	return []*FactorValue{
+		&FactorValue{
+			value:             genValue(counts[0]+1, counts[1], counts[2]),
+			incrementedFactor: 3,
+		},
+		&FactorValue{
+			value:             genValue(counts[0], counts[1]+1, counts[2]),
+			incrementedFactor: 5,
+		},
+		&FactorValue{
+			value:             genValue(counts[0], counts[1], counts[2]+1),
+			incrementedFactor: 7,
+		},
+	}
+}
+
+func genValue(three, five, seven int) int {
+	value := float64(1)
+	if three != 0 {
+		value = value * math.Pow(3, float64(three))
+	}
+	if five != 0 {
+		value = value * math.Pow(5, float64(five))
+	}
+	if seven != 0 {
+		value = value * math.Pow(7, float64(seven))
+	}
+	return int(value)
+}
+
+func minNumber(values []*FactorValue) *FactorValue {
+	sort.Slice(values, func(i, j int) bool {
+		return values[i].value < values[j].value
+	})
+	fmt.Println(values[0])
+	return values[0]
+}
+
+type FactorValue struct {
+	value             int
+	incrementedFactor int
 }
 
 func GetNextNumber(factor int, primes *[]int) int {
