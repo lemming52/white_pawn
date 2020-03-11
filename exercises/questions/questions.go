@@ -371,3 +371,47 @@ type CircusPerson struct {
 func (c *CircusPerson) isSmaller(p *CircusPerson) bool {
 	return c.height < p.height && c.weight < p.weight
 }
+
+/*
+QuestionNine
+
+Design an algorithm to find the kth number such that the only prime factors are
+3, 5, 7. 3, 5, 7 need not be factors but no other prime
+*/
+func QuestionNine(k int) []int {
+	results, primes := []int{}, []int{}
+	factor := 1
+	for i := 0; i < k; i++ {
+		factor = GetNextNumber(factor, &primes)
+		results = append(results, factor)
+		factor++
+	}
+	return results
+}
+
+func GetNextNumber(factor int, primes *[]int) int {
+	for true {
+		prime := CheckFactor(factor, primes)
+		if prime {
+			fmt.Println(factor, "prime")
+			return factor
+		}
+		factor++
+	}
+	return 0
+}
+
+func CheckFactor(i int, primes *[]int) bool {
+	fmt.Println(i, primes)
+
+	for _, p := range *primes {
+		if i%p == 0 {
+			return false
+		}
+	}
+	if i == 1 || i%3 == 0 || i%5 == 0 || i%7 == 0 {
+		return true
+	}
+	*primes = append(*primes, i)
+	return false
+}

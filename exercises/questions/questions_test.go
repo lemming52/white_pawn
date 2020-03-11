@@ -2,6 +2,7 @@ package questions
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -307,31 +308,43 @@ func TestQuestionEight(t *testing.T) {
 				&CircusPerson{3, 35},
 				&CircusPerson{4, 36},
 			},
-		}, {
-			name: "breaking",
-			staff: []*CircusPerson{
-				&CircusPerson{1, 100},
-				&CircusPerson{2, 34},
-				&CircusPerson{3, 35},
-				&CircusPerson{4, 36},
-			},
-			tower: []*CircusPerson{
-				&CircusPerson{2, 34},
-				&CircusPerson{3, 35},
-				&CircusPerson{4, 36},
-			},
-		}
+		},
 	}
 	for _, test := range tests {
 		tt := test
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 			result := QuestionEight(tt.staff)
-			for i := range result {
-				fmt.Println(result[i].height, result[i].weight)
-			}
 			assert.Equal(t, tt.tower, result)
 		})
 	}
+}
 
+func TestQuestionNine(t *testing.T) {
+	tests := []struct {
+		name     string
+		k        int
+		expected []int
+	}{
+		{
+			name:     "base",
+			k:        7,
+			expected: []int{1, 3, 5, 7, 9, 15, 21},
+		}, {
+			name:     "longer",
+			k:        10,
+			expected: []int{1, 3, 5, 7, 9, 15, 21, 25, 27, 35},
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionNine(tt.k)
+			ok := reflect.DeepEqual(tt.expected, result)
+			if !ok {
+				t.Error("result array should equal", result, tt.expected)
+			}
+		})
+	}
 }
