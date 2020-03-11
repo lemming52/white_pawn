@@ -333,32 +333,41 @@ func QuestionEight(staff []*CircusPerson) []*CircusPerson {
 		Could start by sorting the set by height and weight, then incrementing across both lists.
 		Might need to increment weight first and hieght first to avoid edge cases
 	*/
-	maxLength := len(staff)
-	weight := make([]*CircusPerson, maxLength)
-	height := make([]*CircusPerson, maxLength)
-	copy(weight, staff)
-	copy(height, staff)
-
 	sort.Slice(staff, func(i, j int) bool {
 		return staff[i].weight < staff[j].weight
 	})
+	return LongestSubTower(staff, []*CircusPerson{}, 0)
+}
 
-	for _, s := range staff {
-		fmt.Println(s.weight, s.height)
+func LongestSubTower(array []*CircusPerson, sequence []*CircusPerson, index int) []*CircusPerson {
+	if index >= len(array) {
+		return sequence
 	}
+	bestWith := []*CircusPerson{}
+	if canAppend(sequence, array[index]) {
+		sequenceWith := append(sequence, array[index])
+		bestWith = LongestSubTower(array, sequenceWith, index+1)
+	}
+	bestWithout := LongestSubTower(array, sequence, index+1)
+	if len(bestWith) > len(bestWithout) {
+		return bestWith
+	}
+	return bestWithout
 
-	for i := 0; i < len(staff)-1; {
-		fmt.Println(staff, i)
-		if staff[i].height < staff[i+1].height {
-			i++
-		} else {
-			staff = append(staff[0:i+1], staff[i+2:]...)
-		}
+}
+
+func canAppend(solution []*CircusPerson, person *CircusPerson) bool {
+	if len(solution) == 0 {
+		return true
 	}
-	return staff
+	return solution[len(solution)-1].isSmaller(person)
 }
 
 type CircusPerson struct {
 	weight int
 	height int
+}
+
+func (c *CircusPerson) isSmaller(p *CircusPerson) bool {
+	return c.height < p.height && c.weight < p.weight
 }
