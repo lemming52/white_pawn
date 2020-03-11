@@ -1,6 +1,7 @@
 package questions
 
 import (
+	"container/list"
 	"fmt"
 	"math"
 	"math/bits"
@@ -392,70 +393,55 @@ func QuestionNine(k int) []int {
 */
 
 func QuestionNine(k int) []int {
-	results := []int{1}
-	counts := []int{0, 0, 0}
+	if k < 1 {
+		return []int{}
+	}
+	values := []int{}
+	val := 0
+	queue3 := list.New()
+	queue5 := list.New()
+	queue7 := list.New()
+	queue3.PushBack(1)
+
+	maxElement := list.Element{Value: int(^uint(0) >> 1)}
+
 	for i := 0; i < k; i++ {
-		nextSet := genNumbers(counts)
-		for _, num := range nextSet {
-			fmt.Println(num.value)
+		v3 := queue3.Front()
+		v5 := queue5.Front()
+		v7 := queue7.Front()
+		if v5 == nil {
+			v5 = &maxElement
 		}
-		value := minNumber(nextSet)
-		switch value.incrementedFactor {
-		case 3:
-			counts[0]++
-		case 5:
-			counts[1]++
-		case 7:
-			counts[2]++
+		if v7 == nil {
+			v7 = &maxElement
 		}
-		fmt.Println(counts)
-		results = append(results, value.value)
+		if v7.Value.(int) < v5.Value.(int) {
+			if v7.Value.(int) < v3.Value.(int) {
+				val = v7.Value.(int)
+			} else {
+				val = v3.Value.(int)
+			}
+		} else {
+			if v5.Value.(int) < v3.Value.(int) {
+				val = v5.Value.(int)
+			} else {
+				val = v3.Value.(int)
+			}
+		}
+		if val == v3.Value {
+			queue3.Remove(v3)
+			queue3.PushBack(3 * val)
+			queue5.PushBack(5 * val)
+		} else if val == v5.Value {
+			queue5.Remove(v5)
+			queue5.PushBack(5 * val)
+		} else if val == v7.Value {
+			queue7.Remove(v7)
+		}
+		queue7.PushBack(7 * val)
+		values = append(values, val)
 	}
-	return results
-}
-
-func genNumbers(counts []int) []*FactorValue {
-	return []*FactorValue{
-		&FactorValue{
-			value:             genValue(counts[0]+1, counts[1], counts[2]),
-			incrementedFactor: 3,
-		},
-		&FactorValue{
-			value:             genValue(counts[0], counts[1]+1, counts[2]),
-			incrementedFactor: 5,
-		},
-		&FactorValue{
-			value:             genValue(counts[0], counts[1], counts[2]+1),
-			incrementedFactor: 7,
-		},
-	}
-}
-
-func genValue(three, five, seven int) int {
-	value := float64(1)
-	if three != 0 {
-		value = value * math.Pow(3, float64(three))
-	}
-	if five != 0 {
-		value = value * math.Pow(5, float64(five))
-	}
-	if seven != 0 {
-		value = value * math.Pow(7, float64(seven))
-	}
-	return int(value)
-}
-
-func minNumber(values []*FactorValue) *FactorValue {
-	sort.Slice(values, func(i, j int) bool {
-		return values[i].value < values[j].value
-	})
-	fmt.Println(values[0])
-	return values[0]
-}
-
-type FactorValue struct {
-	value             int
-	incrementedFactor int
+	return values
 }
 
 func GetNextNumber(factor int, primes *[]int) int {
