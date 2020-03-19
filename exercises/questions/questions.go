@@ -470,3 +470,32 @@ func CheckFactor(i int, primes *[]int) bool {
 	*primes = append(*primes, i)
 	return false
 }
+
+/*
+QuestionTen
+
+Find the majority element in an array
+given array of positive integers, find majority element in O(N) time and O(1) space
+*/
+func QuestionTen(array []int) int {
+	counts := map[int]int{}
+	for _, elem := range array {
+		_, ok := counts[elem]
+		if ok {
+			counts[elem]++
+		} else {
+			counts[elem] = 1
+		}
+	}
+	max, count := 0, 0
+	for k, v := range counts {
+		if v > count {
+			max = k
+			count = v
+		}
+	}
+	if count >= len(array)/2 {
+		return max
+	}
+	return -1
+}

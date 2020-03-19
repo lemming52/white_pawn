@@ -348,3 +348,28 @@ func TestQuestionNine(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionTen(t *testing.T) {
+	tests := []struct {
+		name     string
+		expected int
+		array    []int
+	}{
+		{
+			name:     "base",
+			expected: 5,
+			array:    []int{2, 3, 5, 5, 5, 5, 8},
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionTen(tt.array)
+			ok := reflect.DeepEqual(tt.expected, result)
+			if !ok {
+				t.Error("result array should equal", result, tt.expected)
+			}
+		})
+	}
+}
