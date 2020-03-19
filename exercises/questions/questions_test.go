@@ -359,6 +359,18 @@ func TestQuestionTen(t *testing.T) {
 			name:     "base",
 			expected: 5,
 			array:    []int{2, 3, 5, 5, 5, 5, 8},
+		}, {
+			name:     "book",
+			expected: 7,
+			array:    []int{3, 1, 7, 1, 1, 7, 7, 3, 7, 7, 7},
+		}, {
+			name:     "no majority",
+			expected: -1,
+			array:    []int{1, 2, 3, 4},
+		}, {
+			name:     "book other",
+			expected: 5,
+			array:    []int{1, 2, 5, 9, 5, 9, 5, 5, 5},
 		},
 	}
 	for _, test := range tests {

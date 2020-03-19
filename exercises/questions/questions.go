@@ -478,24 +478,34 @@ Find the majority element in an array
 given array of positive integers, find majority element in O(N) time and O(1) space
 */
 func QuestionTen(array []int) int {
-	counts := map[int]int{}
+	candidate := getCandidate(array)
+	return validateCandidate(candidate, array)
+}
+
+func getCandidate(array []int) int {
+	candidate, count := 0, 0
 	for _, elem := range array {
-		_, ok := counts[elem]
-		if ok {
-			counts[elem]++
+		if count == 0 {
+			candidate = elem
+		}
+		if elem == candidate {
+			count++
 		} else {
-			counts[elem] = 1
+			count--
 		}
 	}
-	max, count := 0, 0
-	for k, v := range counts {
-		if v > count {
-			max = k
-			count = v
+	return candidate
+}
+
+func validateCandidate(candidate int, array []int) int {
+	count := 0
+	for _, elem := range array {
+		if elem == candidate {
+			count++
 		}
 	}
-	if count >= len(array)/2 {
-		return max
+	if count > len(array)/2 {
+		return candidate
 	}
 	return -1
 }
