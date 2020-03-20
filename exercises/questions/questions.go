@@ -497,7 +497,7 @@ func getCandidate(array []int) int {
 	return candidate
 }
 
-func validaeCandidate(candidate int, array []int) int {
+func validateCandidate(candidate int, array []int) int {
 	count := 0
 	for _, elem := range array {
 		if elem == candidate {
@@ -507,5 +507,15 @@ func validaeCandidate(candidate int, array []int) int {
 	if count > len(array)/2 {
 		return candidate
 	}
+	return -1
+}
+
+/*
+QuestionEleven
+
+Given a list of words, and a candidate word, find the shortest distance between two
+instances of that word.
+*/
+func QuestionEleven(words []string, candidate1, candidate2 string) int {
 	return -1
 }
