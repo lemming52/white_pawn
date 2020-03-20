@@ -517,5 +517,20 @@ Given a list of words, and a candidate word, find the shortest distance between 
 instances of that word.
 */
 func QuestionEleven(words []string, candidate1, candidate2 string) int {
-	return -1
+	var pos1, pos2 int
+	var min float64
+	for i, word := range words {
+		if word == candidate1 {
+			pos1 = i
+		} else if word == candidate2 {
+			pos2 = i
+		} else {
+			continue
+		}
+		delta := math.Abs(float64(pos1 - pos2))
+		if delta < min || min == 0 {
+			min = delta
+		}
+	}
+	return int(min)
 }

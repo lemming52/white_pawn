@@ -400,6 +400,18 @@ func TestQuestionEleven(t *testing.T) {
 			array:      []string{"word1", "a", "b", "word2"},
 			candidate1: "word1",
 			candidate2: "word2",
+		}, {
+			name:       "multiple",
+			expected:   2,
+			array:      []string{"word1", "a", "b", "word2", "a", "word1"},
+			candidate1: "word1",
+			candidate2: "word2",
+		}, {
+			name:       "multiple",
+			expected:   1,
+			array:      []string{"word1", "a", "b", "word2", "a", "A", "word2", "b", "word1", "word2"},
+			candidate1: "word1",
+			candidate2: "word2",
 		},
 	}
 	for _, test := range tests {
