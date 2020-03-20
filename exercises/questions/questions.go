@@ -497,7 +497,7 @@ func getCandidate(array []int) int {
 	return candidate
 }
 
-func validateCandidate(candidate int, array []int) int {
+func validaeCandidate(candidate int, array []int) int {
 	count := 0
 	for _, elem := range array {
 		if elem == candidate {
