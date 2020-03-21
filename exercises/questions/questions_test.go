@@ -426,3 +426,44 @@ func TestQuestionEleven(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionTwelve(t *testing.T) {
+	tests := []struct {
+		name     string
+		array    []int
+		initial  string
+		expected string
+	}{
+		{
+			name:     "base",
+			array:    []int{1, 2, 3, 4},
+			expected: "1 2 3 4",
+		}, {
+			name:     "out of order",
+			array:    []int{3, 2, 4, 1},
+			expected: "1 2 3 4",
+		}, {
+			name:     "long",
+			array:    []int{3, 2, 4, 7, 5, 9, 8, 6, 1},
+			expected: "1 2 3 4 5 6 7 8 9",
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			tree := buildTree(tt.array)
+			head := QuestionTwelve(tree)
+			assert.Equal(t, tt.expected, head.print())
+		})
+	}
+}
+
+func buildTree(array []int) *BiNode {
+	head := newNode(array[0])
+	for i := 1; i < len(array); i++ {
+		fmt.Println(array[i])
+		head.insert(newNode(array[i]))
+	}
+	return head
+}

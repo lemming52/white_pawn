@@ -515,6 +515,7 @@ QuestionEleven
 
 Given a list of words, and a candidate word, find the shortest distance between two
 instances of that word.
+If needed to do repeatedly, could use an approach similar to my first method
 */
 func QuestionEleven(words []string, candidate1, candidate2 string) int {
 	var pos1, pos2 int
@@ -533,4 +534,95 @@ func QuestionEleven(words []string, candidate1, candidate2 string) int {
 		}
 	}
 	return int(min)
+}
+
+/*
+QuestionTwelve
+
+given a binode struture, representing a binary tree, convert to a doubly linked list
+*/
+func QuestionTwelve(head *BiNode) *BiNode {
+	return convert(head)
+}
+
+func convert(node *BiNode) *BiNode {
+	if node == nil {
+		return nil
+	}
+	left := convert(node.nodeLess)
+	right := convert(node.nodeMore)
+	fmt.Println(node.data, node.nodeLess, node.nodeMore, left, right)
+	if left != nil {
+		attach(getTail(left), node)
+	}
+	if right != nil {
+		attach(node, right)
+	}
+	if left == nil {
+		return node
+	}
+	return left
+}
+
+func attach(a, b *BiNode) {
+	a.nodeMore = b
+	b.nodeLess = a
+}
+
+func getTail(node *BiNode) *BiNode {
+	if node == nil {
+		return nil
+	}
+	n := node
+	for n.nodeMore != nil {
+		n = n.nodeMore
+	}
+	return n
+}
+
+type BiNode struct {
+	nodeLess *BiNode
+	nodeMore *BiNode
+	data     int
+}
+
+func (node *BiNode) print() string {
+	entries := []string{strconv.Itoa(node.data)}
+	n := node.nodeLess
+	for n != nil {
+		entries = append([]string{strconv.Itoa(n.data)}, entries...)
+		n = n.nodeLess
+	}
+	n = node.nodeMore
+	for n != nil {
+		entries = append(entries, strconv.Itoa(n.data))
+		n = n.nodeMore
+	}
+	return strings.Join(entries, " ")
+}
+
+func (node *BiNode) insert(n *BiNode) {
+	if node.data < n.data {
+		if node.nodeMore != nil {
+			node.nodeMore.insert(n)
+		} else {
+			node.nodeMore = n
+		}
+		return
+	}
+	if node.nodeLess != nil {
+		node.nodeLess.insert(n)
+	} else {
+		node.nodeLess = n
+	}
+
+	return
+}
+
+func newNode(data int) *BiNode {
+	return &BiNode{
+		nodeLess: nil,
+		nodeMore: nil,
+		data:     data,
+	}
 }
