@@ -659,7 +659,6 @@ func bestResult(text string, dict map[string]bool, start int) (string, int) {
 			if (invalid + invalidResult) < maxInvalid {
 				maxInvalid = invalidResult + invalid
 				best = fmt.Sprintf("%s %s", partial, textResult)
-				fmt.Println("marco", best, maxInvalid, textResult, invalidResult)
 				if maxInvalid == 0 {
 					break
 				}
@@ -681,4 +680,67 @@ func QuestionFourteen(array []int, k int) []int {
 		return array[i] < array[j]
 	})
 	return array[:k]
+}
+
+/*
+QuestionFifteen
+
+given list of words, find longest word that consists of other words
+*/
+func QuestionFifteen(array []string) string {
+	words := map[string]bool{}
+	for _, word := range array {
+		words[word] = true
+	}
+	sort.Slice(array, func(i, j int) bool {
+		return len(array[i]) > len(array[j])
+	})
+	for _, word := range array {
+		fmt.Println(word, words)
+		if canBuildWord(word, true, words) {
+			return word
+		}
+	}
+	return ""
+}
+
+func canBuildWord(word string, original bool, dict map[string]bool) bool {
+	res, ok := dict[word]
+	if ok && !original {
+		return res
+	}
+	for i := 0; i < len(word); i++ {
+		left := string(word[0:i])
+		right := string(word[i:])
+		lRes, lOK := dict[left]
+		if lOK && lRes && canBuildWord(right, false, dict) {
+			return true
+		}
+	}
+	dict[word] = false
+	return false
+}
+
+/*
+QuestionSixteen
+
+Given a sequence of appointemnets , find the highest non adjacent
+number of minutes
+*/
+func QuestionSixteen(array []int) int {
+	oneAway := 0
+	twoAway := 0
+	for i := len(array) - 1; i >= 0; i-- {
+		bestWith := array[i] + twoAway
+		bestWithout := oneAway
+		var current int
+		if bestWith > bestWithout {
+			current = bestWith
+		} else {
+			current = bestWithout
+		}
+		twoAway = oneAway
+		oneAway = current
+	}
+	return oneAway
 }

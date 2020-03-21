@@ -521,3 +521,47 @@ func TestQuestionFourteen(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionFifteen(t *testing.T) {
+	tests := []struct {
+		name     string
+		array    []string
+		expected string
+	}{
+		{
+			name:     "base",
+			array:    []string{"dog", "cat", "walker", "walk", "dogwalker"},
+			expected: "dogwalker",
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionFifteen(tt.array)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
+
+func TestQuestionSixteen(t *testing.T) {
+	tests := []struct {
+		name     string
+		array    []int
+		expected int
+	}{
+		{
+			name:     "base",
+			array:    []int{30, 15, 60, 75, 45, 15, 15, 45},
+			expected: 180,
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionSixteen(tt.array)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
