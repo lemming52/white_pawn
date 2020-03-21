@@ -467,3 +467,33 @@ func buildTree(array []int) *BiNode {
 	}
 	return head
 }
+
+func TestQuestionThirteen(t *testing.T) {
+	tests := []struct {
+		name            string
+		text            string
+		dict            map[string]bool
+		expectedInvalid int
+		expectedText    string
+	}{
+		{
+			name: "base",
+			text: "weare",
+			dict: map[string]bool{
+				"we":  true,
+				"are": true,
+			},
+			expectedInvalid: 0,
+			expectedText:    "we are",
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result, invalid := QuestionThirteen(tt.text, tt.dict)
+			assert.Equal(t, tt.expectedText, result)
+			assert.Equal(t, tt.expectedInvalid, invalid)
+		})
+	}
+}

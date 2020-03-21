@@ -626,3 +626,46 @@ func newNode(data int) *BiNode {
 		data:     data,
 	}
 }
+
+/*
+QuestionThriteen, given a string of text without spaces, reinsert the spaces
+to minimise the amount of invalid characters, which are not recognised
+*/
+func QuestionThirteen(text string, dict map[string]bool) (string, int) {
+	return bestResult(text, dict, 0)
+}
+
+func bestResult(text string, dict map[string]bool, start int) (string, int) {
+	if start >= len(text) {
+		return "", 0
+	}
+	maxInvalid := 20000
+	best := ""
+	partial := []byte{}
+	i := start
+	for i < len(text) {
+		char := text[i]
+		partial := append(partial, char)
+		word := string(partial)
+		_, ok := dict[word]
+		var invalid int
+		if ok {
+			invalid = 0
+		} else {
+			invalid = len(partial)
+		}
+		if invalid < maxInvalid {
+			textResult, invalidResult := bestResult(text, dict, i+1)
+			if (invalid + invalidResult) < maxInvalid {
+				maxInvalid = invalidResult + invalid
+				best = fmt.Sprintf("%s %s", partial, textResult)
+				fmt.Println("marco", best, maxInvalid, textResult, invalidResult)
+				if maxInvalid == 0 {
+					break
+				}
+			}
+		}
+		i++
+	}
+	return best, maxInvalid
+}
