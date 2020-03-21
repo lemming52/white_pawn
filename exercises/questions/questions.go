@@ -669,3 +669,16 @@ func bestResult(text string, dict map[string]bool, start int) (string, int) {
 	}
 	return best, maxInvalid
 }
+
+/*
+QuestionFourteen
+
+find the k smallest numbers in array
+*/
+func QuestionFourteen(array []int, k int) []int {
+	// obvious approach
+	sort.Slice(array, func(i, j int) bool {
+		return array[i] < array[j]
+	})
+	return array[:k]
+}

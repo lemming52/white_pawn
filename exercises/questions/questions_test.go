@@ -497,3 +497,27 @@ func TestQuestionThirteen(t *testing.T) {
 		})
 	}
 }
+
+func TestQuestionFourteen(t *testing.T) {
+	tests := []struct {
+		name     string
+		array    []int
+		k        int
+		expected []int
+	}{
+		{
+			name:     "base",
+			array:    []int{4, 7, 1, 2},
+			k:        2,
+			expected: []int{1, 2},
+		},
+	}
+	for _, test := range tests {
+		tt := test
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			result := QuestionFourteen(tt.array, tt.k)
+			assert.Equal(t, tt.expected, result)
+		})
+	}
+}
