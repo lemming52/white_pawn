@@ -4,7 +4,10 @@ Given a string s, find the longest palindromic substring in s. You may assume th
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        for i in range(len(s), 1, -1):
+        total_length = len(s)
+        if total_length == 0:
+            return ""
+        for i in range(total_length, 1, -1):
             for j in range(0, len(s) - i + 1):
                 res = checkPalindrome(s[j:j+i])
                 if res:
@@ -16,4 +19,4 @@ def checkPalindrome(s: str) -> bool:
     for i in range(0, int(len(s) / 2)):
         if s[i] != s[-(i + 1)]:
             return False
-    return True
+    return True:
