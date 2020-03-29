@@ -25,7 +25,7 @@ class Solution:
         if len(s) == 0:
             return 0
         sign = 1
-        results = []
+        result = 0
         if s[0] == "-":
             sign = -1
             s = s[1:]
@@ -34,15 +34,9 @@ class Solution:
         for char in s:
             if char not in DIGIT_MAP:
                 break
-            results.append(DIGIT_MAP[char])
-
-        res = 0
-        power = 1
-        for i in range(len(results) - 1, -1, -1):
-            res += results[i]*power
-            power *= 10
-        if res > MAX_INT:
+            result = result * 10 + DIGIT_MAP[char]
+        if result >= MAX_INT:
             if sign == -1:
                 return MAX_INT * sign
             return MAX_INT - 1
-        return res * sign
+        return result * sign
