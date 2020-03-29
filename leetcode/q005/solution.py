@@ -7,16 +7,24 @@ class Solution:
         total_length = len(s)
         if total_length == 0:
             return ""
-        for i in range(total_length, 1, -1):
-            for j in range(0, len(s) - i + 1):
-                res = checkPalindrome(s[j:j+i])
-                if res:
-                    return s[j:j+i]
-        return s[0]
+        result = ""
+        for i in range(0, total_length):
+            odd_length = checkCentre(s, i, i)
+            even_length = checkCentre(s, i, i + 1)
+            length = max([odd_length, even_length])
+            if length > len(result):
+                result = s[i - int((length - 1) / 2): i + int(length / 2) + 1]
+        return result
 
 
-def checkPalindrome(s: str) -> bool:
-    for i in range(0, int(len(s) / 2)):
-        if s[i] != s[-(i + 1)]:
-            return False
-    return True:
+def checkCentre(s: str, left, right: int) -> int:
+    i = left
+    j = right
+    length = 1
+    while i >= 0 and j < len(s):
+        if s[i] != s[j]:
+            return length - 1
+        i -= 1
+        j += 1
+        length = j - i
+    return length - 1
