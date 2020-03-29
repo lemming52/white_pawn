@@ -5,23 +5,18 @@ class Solution:
             check how far you can go without repeating a character
         """
         max_length = 0
-        i = 0
+        i, j = 0, 0
         total_length = len(s)
 
-        while max_length < (total_length - i):
-            length, nextpos = findUniqueLength(s[i:])
-            i += nextpos
-            if length > max_length:
-                max_length = length
+        positions = {}
+
+        while j < total_length:
+            char = s[j]
+            if char in positions:
+                if positions.get(char, 0) > i:
+                    i = positions[char]
+            if j - i + 1 > max_length:
+                max_length = j - i + 1
+            j += 1
+            positions[char] = j
         return max_length
-
-def findUniqueLength(s: str) -> (int, int):
-    chars = {}
-    for i, char in range(0, len(s)):
-        char = s[i]
-        if char in chars:
-            nextStart = chars[char]
-            return len(chars), nextStart + 1
-        chars[char] = i
-    return len(chars), len(s)
-
