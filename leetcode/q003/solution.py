@@ -1,6 +1,3 @@
-
-MAX_SUBSTRING_LENGTH = 26
-
 class Solution:
     def lengthOfLongestSubstring(self, s: str) -> int:
         """
@@ -8,23 +5,23 @@ class Solution:
             check how far you can go without repeating a character
         """
         max_length = 0
+        i = 0
         total_length = len(s)
 
-        for i in range(0, total_length):
-            if max_length > (total_length - i):
-                return max_length
-            length = findUniqueLength(s[i:])
+        while max_length < (total_length - i):
+            length, nextpos = findUniqueLength(s[i:])
+            i += nextpos
             if length > max_length:
                 max_length = length
-            if max_length == MAX_SUBSTRING_LENGTH:
-                return max_length
         return max_length
 
-def findUniqueLength(s: str) -> int:
+def findUniqueLength(s: str) -> (int, int):
     chars = {}
-    for char in s:
+    for i, char in range(0, len(s)):
+        char = s[i]
         if char in chars:
-            return len(chars)
-        chars[char] = True
-    return len(chars)
+            nextStart = chars[char]
+            return len(chars), nextStart + 1
+        chars[char] = i
+    return len(chars), len(s)
 
