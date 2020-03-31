@@ -11,7 +11,9 @@ class Solution:
         entries = len(height)
         res = 0
         for i in range(entries):
-            for j in range(i, entries):
+            for j in range(entries - 1, i, -1):
+                if height[i] * (j - i) < res:
+                    break
                 area = getArea(i, height[i], j, height[j])
                 if area > res:
                     res = area
