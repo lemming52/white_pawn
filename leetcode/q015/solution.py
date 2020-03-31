@@ -10,18 +10,52 @@ from typing import Dict, List
 
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
+        neg, zero, pos = [], [], []
         results = []
-        length = len(nums)
-        found = {}
-        for i, a in enumerate(nums[:-2]):
-            for j in range(i+1, length-1):
-                b = nums[j]
-                for k in range(j+1, length):
-                    c = nums[k]
-                    if (a + b + c) == 0:
-                        res = [a, b, c]
-                        key = "".join([str(x) for x in sorted(res)])
-                        if not key in found:
-                            results.append(res)
-                            found[key] = True
+        for n in nums:
+            if n < 0:
+                neg.append(n)
+            elif n > 0:
+                pos.append(n)
+            else:
+                zero.append(0)
+
+        n_zero = len(zero)
+        if n_zero > 0:
+            if n_zero >= 3:
+                results.append([0,0,0])
+            check_with_zero(neg, pos, results)
+        for i, a in enumerate(neg):
+            check_two_pos(pos, a * -1, results)
+            check_one_pos(neg, pos, a * -1, results)
         return results
+
+def check_with_zero(neg, pos: List[int], res: List[List[int]]) -> None:
+    found = {}
+    for a in neg:
+        for b in pos:
+            if a + b == 0:
+                key = f'{a}{b}'
+                if not key in found:
+                    res.append([a, 0, b])
+                    found[key] = True
+
+def check_two_pos(pos: List[int], a: int, res: List[List[int]]) -> None:
+    found = {}
+    for i, b in enumerate(pos):
+        for c in pos[i+1:]:
+            if (b + c) == a:
+                key = f'{b}{c}'
+                if not key in found:
+                    res.append([a * -1, b, c])
+                    found[key] = True
+
+def check_one_pos(neg, pos: List[int], a: int, res: List[List[int]]) -> None:
+    found = {}
+    for b in neg:
+        for c in pos:
+            if b + c == a:
+                key = f'{b}{c}'
+                if not key in found:
+                    res.append([a * -1, b, c])
+                    found[key] = True
