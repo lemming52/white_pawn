@@ -9,14 +9,18 @@ Note: You may not slant the container and n is at least 2.
 class Solution:
     def maxArea(self, height: List[int]) -> int:
         entries = len(height)
+        max_height = 0
         res = 0
         for i in range(entries):
+            if height[i] < max_height:
+                continue
             for j in range(entries - 1, i, -1):
                 if height[i] * (j - i) < res:
                     break
                 area = getArea(i, height[i], j, height[j])
                 if area > res:
                     res = area
+                    max_height = height[i]
         return res
 
 def getArea(x1, y1, x2, y2) -> int:
