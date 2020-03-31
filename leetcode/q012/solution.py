@@ -9,52 +9,26 @@ C can be placed before D (500) and M (1000) to make 400 and 900.
 Given an integer, convert it to a roman numeral. Input is guaranteed to be within the range from 1 to 3999.
 """
 
-from typing import Dict
+from typing import Dict, List
 
-CHARACTER_MAP = {
-    0: {
-        "0": "",
-        "1": "I",
-        "2": "II",
-        "3": "III",
-        "4": "IV",
-        "5": "V",
-        "6": "VI",
-        "7": "VII",
-        "8": "VIII",
-        "9": "IX"
-    },
-    1: {
-        "0": "",
-        "1": "X",
-        "2": "XX",
-        "3": "XXX",
-        "4": "XL",
-        "5": "L",
-        "6": "LX",
-        "7": "LXX",
-        "8": "LXXX",
-        "9": "XC"
-    },
-    2: {
-        "0": "",
-        "1": "C",
-        "2": "CC",
-        "3": "CCC",
-        "4": "CD",
-        "5": "D",
-        "6": "DC",
-        "7": "DCC",
-        "8": "DCCC",
-        "9": "CM"
-    },
-    3: {
-        "0": "",
-        "1": "M",
-        "2": "MM",
-        "3": "MMM",
-    }
+STRUCTURE_MAP = {
+    "0": "",
+    "1": "{base}",
+    "2": "{base}{base}",
+    "3": "{base}{base}{base}",
+    "4": "{base}{half}",
+    "5": "{half}",
+    "6": "{half}{base}",
+    "7": "{half}{base}{base}",
+    "8": "{half}{base}{base}{base}",
+    "9": "{base}{full}"
+}
 
+BASIS_MAP = {
+    0: ["I", "V", "X"],
+    1: ["X", "L", "C"],
+    2: ["C", "D", "M"],
+    3: ["M", "?", "?"]
 }
 
 class Solution:
@@ -63,9 +37,10 @@ class Solution:
         max_power = len(num) - 1
         res = []
         for i, digit in enumerate(num):
-            res.append(convert_digit(digit, max_power - i, CHARACTER_MAP))
+            res.append(convert_digit(digit, max_power - i, STRUCTURE_MAP, BASIS_MAP))
         return "".join(res)
 
 
-def convert_digit(digit: str, power: int, characters: Dict[int, Dict[str, str]]) -> str:
-    return characters[power][digit]
+def convert_digit(digit: str, power: int, structure: Dict[str, str], basis: Dict[int, List[str]]) -> str:
+    base, half, full = basis[power]
+    return structure[digit].format(base=base, half=half, full=full)
