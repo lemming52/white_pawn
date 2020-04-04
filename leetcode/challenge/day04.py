@@ -16,7 +16,12 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        for n in nums:
-            if n == 0:
-                nums.remove(n)
-                nums.append(0)
+        counter, length = 0, len(nums)
+        for i in range(length):
+            if nums[i] != 0:
+                nums[counter] = nums[i]
+                counter += 1
+
+        while counter < length:
+            nums[counter] = 0
+            counter += 1
