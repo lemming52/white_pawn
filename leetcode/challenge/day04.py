@@ -16,24 +16,7 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        i, j = 0, len(nums) - 1
-        while j > i:
-            print(nums)
-            a = nums[i]
-            b = nums[j]
-            if b == 0:
-                j -= 1
-                continue
-            if a != 0:
-                a += 1
-                continue
-            swap(nums, i, j)
-            i += 1
-            j -= 1
-
-def swap(nums: List[int], i, j: int) -> None:
-    while i < j:
-        nums[i] = nums[i+1]
-        i += 1
-    nums[j] = 0
-
+        for n in nums:
+            if n == 0:
+                nums.remove(n)
+                nums.append(0)
