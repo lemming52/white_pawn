@@ -17,6 +17,7 @@ Return an list of non-empty reports in order of X coordinate.  Every report will
 #         self.left = None
 #         self.right = None
 
+
 class Output:
     def __init__(self):
         self.output = []
@@ -27,10 +28,10 @@ class Output:
         if x not in self.knownX:
             if x < self.minimumX:
                 self.minimumX = x
-            self.output.insert(x - self.minimumX, [val])
+            self.output.insert(x - self.minimumX, [[val, y]])
             self.knownX[x] = True
         else:
-            self.output[x - self.minimumX].append(val)
+            self.output[x - self.minimumX].append([val, y])
 
 
 class Solution:
@@ -38,7 +39,6 @@ class Solution:
         output = Output()
         targets = [[0, 0, root]]
         while len(targets) != 0:
-            print([[x[0], x[1], x[2].val] for x in targets] , output.output)
             nextTargets = []
             for target in targets:
                 x, y, node = target
@@ -48,5 +48,9 @@ class Solution:
                 if node.right:
                     nextTargets.append([x+1, y-1, node.right])
             targets = nextTargets
-        return output.output
+        sortedOutput = [sorted(subset, key=lambda x: (-x[1], x[0])) for subset in output.output]
+        results = []
+        for subset in sortedOutput:
+            results.append([x[0] for x in subset])
+        return results
 
