@@ -25,28 +25,28 @@ class Output:
 
     def Add(self, x, y, val: int) -> None:
         if x not in self.knownX:
-            self.output.insert(x - self.minimumX, [val])
-            self.knownX[x] = True
             if x < self.minimumX:
                 self.minimumX = x
+            self.output.insert(x - self.minimumX, [val])
+            self.knownX[x] = True
         else:
             self.output[x - self.minimumX].append(val)
-
-    def Export(self) -> List[List[int]]:
-        return [sorted(x) for x in self.output]
 
 
 class Solution:
     def verticalTraversal(self, root: TreeNode) -> List[List[int]]:
         output = Output()
-        traverseAndSort(root, 0, 0, output)
-        return output.Export()
-
-
-def traverseAndSort(node: TreeNode, x, y: int, output: Output) -> None:
-    output.Add(x, y, node.val)
-    if node.left:
-        traverseAndSort(node.left, x-1, y-1, output)
-    if node.right:
-        traverseAndSort(node.right, x+1, y-1, output)
+        targets = [[0, 0, root]]
+        while len(targets) != 0:
+            print([[x[0], x[1], x[2].val] for x in targets] , output.output)
+            nextTargets = []
+            for target in targets:
+                x, y, node = target
+                output.Add(x, y, node.val)
+                if node.left:
+                    nextTargets.append([x-1, y-1, node.left])
+                if node.right:
+                    nextTargets.append([x+1, y-1, node.right])
+            targets = nextTargets
+        return output.output
 
