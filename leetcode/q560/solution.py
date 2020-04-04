@@ -11,12 +11,15 @@ The range of numbers in the array is [-1000, 1000] and the range of the integer 
 
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        count, length = 0, len(nums)
-        for i in range(length):
-            total = 0
-            while i < length:
-                total += nums[i]
-                if total == k:
-                    count += 1
-                i += 1
+        sumMap = {0:1}
+        count, total = 0, 0
+        for n in nums:
+            total += n
+            delta = total - k
+            if delta in sumMap:
+                count += sumMap[delta]
+            if total in sumMap:
+                sumMap[total] += 1
+            else:
+                sumMap[total] = 1
         return count
