@@ -9,19 +9,16 @@ Explanation: You can construct two palindromes using all characters in s.
 Some possible constructions "anna" + "elble", "anbna" + "elle", "anellena" + "b"
 """
 
+import collections
+
 class Solution:
     def canConstruct(self, s: str, k: int) -> bool:
         if k > len(s):
             return False
-        characterCounts = {}
-        for char in s:
-            if char in characterCounts:
-                characterCounts[char] += 1
-            else:
-                characterCounts[char] = 1
+        characterCounts = collections.Counter(s).values()
 
         odd = 0
-        for char, count in characterCounts.items():
+        for count in characterCounts:
             odd += count % 2
         return k >= odd
 
