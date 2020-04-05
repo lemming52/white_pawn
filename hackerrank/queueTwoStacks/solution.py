@@ -43,31 +43,21 @@ Sample Output
 
 class HackerrankQueue(object):
     def __init__(self):
-        self.s1 = []
-        self.s2 = []
-
-    def enqueue(self, val):
-        while self.s1 != []:
-            self.s2.append(self.s1.pop())
-        self.s1.append(val)
-        while self.s2 != []:
-            self.s1.append(self.s2.pop())
-
-    def dequeue(self):
-        if self.s1 != []:
-            return self.s1.pop()
-        return None
+        self.first = []
 
     def peek(self):
-        if self.s1 == []:
-            return ""
-        return self.s1[-1]
+        return self.first[0]
+
+    def dequeue(self):
+        self.first = self.first[1:]
+
+    def enqueue(self, value):
+        self.first.append(value)
 
 queue = HackerrankQueue()
 t = int(input())
 for line in range(t):
     values = input().split()
-    print(values)
 
     if len(values) == 2:
         queue.enqueue(values[1])
