@@ -51,22 +51,7 @@ def rotLeft(a: List[int], d: int) -> List[int]:
         return a
     if d > length:
         d = d - length
-    if d > length // 2:
-        for i in range(0, length - d):
-            rotRightSingle(a, length)
-    else:
-        for i in range(0, d):
-            rotLeftSingle(a, length-1)
-    return a
-
-def rotLeftSingle(a: List[int], length: int) -> None:
-    for i in range(0, length):
-        a[i], a[i+1] = a[i+1], a[i]
-
-def rotRightSingle(a: List[int], length: int) -> None:
-    for i in range(length - 1, 0, -1):
-        a[i], a[i-1] = a[i-1], a[i]
-
+    return a[d:] + a[:d]
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
