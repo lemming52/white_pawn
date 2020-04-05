@@ -63,21 +63,17 @@ import sys
 
 # Complete the insertionSort1 function below.
 def insertionSort1(n, arr):
-    prior = None
-    unsorted_index = 0
-    for i, n in enumerate(arr):
-        if not prior:
-            prior = n
-        if n > prior:
-            prior = n
+    unsortedVal = arr[-1]
+    for i in range(len(arr) - 2, -1, -1):
+        if arr[i] > unsortedVal:
+            arr[i + 1] =  arr[i]
+            print(" ".join([str(x) for x in arr]))
         else:
-            unsorted_index = i
-    for i in range(unsorted_index, len(arr)):
-        for j in range(0, i):
-            if arr[j] > arr[i]:
-                arr = arr[:j] + [arr[i]] + arr[j:i] + arr[i+1:]
-    return arr
-
+            arr[i+1] = unsortedVal
+            break
+    if unsortedVal < arr[0]:
+        arr[0] = unsortedVal
+    print(" ".join([str(x) for x in arr]))
 
 if __name__ == '__main__':
     n = int(input())
