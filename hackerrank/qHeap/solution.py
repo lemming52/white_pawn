@@ -33,56 +33,33 @@ Sample Output
 9
 """
 
-class QueueHeap(object):
+import heapq
+
+class MinHeap:
     def __init__(self):
         self.heap = []
-        self.size = 0
 
-    def parent(self, i):
-        return i / 2
+    def insert(self, item):
+        heapq.heappush(self.heap, item)
 
-    def left(self, i):
-        return 2 * i
-
-    def right(self, i):
-        return 2 * i + 1
-
-    def min_heapify(self, i):
-        left = self.left(i)
-        right = self.right(i)
-        smallest = i
-        if left <= self.size and self.heap[left] < self.heap[i]:
-            smallest = left
-        if right <= self.size and self.heap[right] < self.heap[smallest]:
-            smallest = right
-        if smallest != i:
-            self.heap[i], self.heap[smallest] = self.heap[smallest], self.heap[i]
-            self.min_heapify(smallest)
-
-    def insert(self, key):
-        self.size += 1
-        self.heap.append(10**10)
-        self.decreaseKey(self.size - 1, key)
-
-    def decreaseKey(self, i, key):
-        self.heap[i] = key
-        while i > 1 and self.heap[self.parent(i)] > self.heap[i]:
-            self.heap[self.parent(i)],  self.heap[i] = self.heap[i], self.heap[self.parent(i)]
-            i = self.parent(i)
+    def pop(self):
+        return heapq.heappop(self.h)
 
     def heapMin(self):
         return self.heap[0]
 
-    def delete(self, key):
-        for i, n in enumerate(self.heap):
-            if n == key:
-                self.heap[i] = self.heap.pop()
-                self.size -= 1
-                self.min_heapify(i)
-                break
+    def delete(self, val):
+        self.heap.remove(val)
+        heapq.heapify(self.heap)
+
+    def __getitem__(self, item):
+        return self.heap[item]
+
+    def __len__(self):
+        return len(self.h)
 
 if __name__ == '__main__':
-    heap = QueueHeap()
+    heap = MinHeap()
     t = int(input())
     for line in range(t):
         values = input().split()
@@ -93,6 +70,6 @@ if __name__ == '__main__':
             else:
                 heap.delete(values[1])
         elif len(values) == 1:
-            print(heap.heapMin)
+            print(heap.heapMin())
 
 
