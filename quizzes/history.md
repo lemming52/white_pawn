@@ -169,4 +169,32 @@ What is the name of the General portrayed by Stephen Fry in 'Blackadder Goes For
 > General Melchett
 
 
+# Cold War
+
+Give the name of either of the first two members of the Cambridge Five to defect to the Soviet Union,whose codenames were 'Honey' and 'Hicks'
+> Donald MacLean & Guy Burgess
+
+In the novels of John le Carre, particularly those concerning Smiley, what name is used to refer to MI6?
+> The Circus
+
+What is the name of the best known crossing point of the Berlin Wall, located on Friedrichstrasse?
+> Checkpoint Charlie
+
+What was described by Garry Kasparov as "a crushing moment in the midst of the Cold War"?
+> Fischer's victory over Spassky in the 1972 World Chess Championship
+
+What term describes the non-physical boundary that represented the Soviet Union's attempts to isolate itself and its satellite states from open contact with the West?
+> The Iron Curtain, first used by Churchill
+
+Which bay was the site of the failed 1961 invasion of Cuba by cuban exiles, sponsored by the American Government?
+> Bay of Pigs
+
+The Cuban Missile Crisis is one of two times a US Military Alert Level has reached Level 2, the other being the opening phase of Desert Storm. What is the name of this level?
+> DEFCON, Defense Readiness Condition
+
+What object is shown here in the chapter title pages for the comic Watchmen, which is also referred to in the song ‘2 Minutes to Midnight’ by Iron Maiden?
+> The Doomsday Clock, the symbol of the likelihood of a man made global disaster
+
+What German song tells the story of how ballons are mistaken for UFOs, which leads one way or another to a cataclysmic war.
+> 99 Luftballoons
 

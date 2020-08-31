@@ -80,3 +80,67 @@ St. Peter's Basilica was financed over its 150 years of construction by the sell
 
 
 
+# Wailing
+
+Who, when asked 'what is best in life?' responded with 'To crush your enemies, to see them driven before you, and to hear the lamentations of their women'?
+> Conan the Barbarian
+
+Which mythological creatures that could be loosely linked with wailing made their home on rocky islands that have been placed at these locations?
+> Sirens
+
+Siouxsie Sioux's band are onstensably made up of which female irish screaming spirits?
+> Banshees
+
+What name is given the the process by which bats navigate using their calls?
+> Echolocation
+
+What name is given to this commonlly used stock sound effect?
+> Wilhelm Scream
+
+Bob Marley,was a commited rastafarian; which world leader is regarded by some Rastafarians as either a prophet or as the returned Messiah?
+> Haile Selassie
+
+Which poet, associated with the Beat Generation of America, wrote 'Howl' was the subject of an obsecnity trial over its sexual and drug related references, and starts 'I saw the best minds of my generation destroyed by madness, starving hysterical naked'
+> Allen Ginsburg
+
+Where would you find the 'Wailing Wall', although this term is considered derogatory, it is known as Kotel in Hebrew or as the Buraq Wall in Islam.
+> Jerusalem, it was referred to as the wailing wall by christians, as the jews would mourn the destruction of their temples there.
+
+Salix Babylonia is the latin name of which tree, that's a bit upset and features on a notable pottery pattern?
+> (weeping) willow
+
+What word is a synonym of sorts for wailing, described as a loud, prolonged shrill noise used to express grief and sorrow, originating from celtic laments for the dead?
+> keening
+
+
+# Ray Questions
+
+What links Isaac Newton, Pink Floyd, and the Signals Intelligence program run by the NSA whose existence was leaked by Edward Snowdon?
+> Prism
+
+Who do the Blues Brother's acquire their instruments from, followed them giving a rendition of 'Shake a Tail Feather'
+> Ray Charles
+
+The BFG is a fictional ray gun appearing in the 'Doom' series of video games and film. What does BFG stand for?
+> Big Fucking Gun
+
+RADAR, or radio detection and ranging uses radio waves to determine range to objects. What type of light does LIDAR use?
+> (Infrared) Lasers
+
+Where is the 'Sky Beam' shown here, to be found?
+> Las Vegas, Luxor Hotel
+
+Which 1898 novel is considered to have the first description of the sci-fi 'raygun': 'Forthwith flashes of actual flame, a bright glare leaping from one to another, sprang from the scattered group of men. It was as if some invisible jet impinged upon them and flashed into white flame. '
+> War of the Worlds, HG Wells
+
+What verb means: 1. To sparkle 2. To dazzle or impress with liveliness or wit 3. to produce a flash of light due to  the passage of a particle?
+> Scintillate
+
+Where might you see 'crepuscular rays'?
+> Through the clouds, the stereotypical sunbeam
+
+Wilhelm Röntgen won the first Nobel Prize in physics for the production and detection of what kind of electromagnetic radiation, used for medical imaging and radiation therapy?
+> X-Rays
+
+A cyclindrical nonconducting wave guide that transmits light along its axis by total internal reflection. What object is described above, which BT, Virgin and so on want to use to sell you broadband?
+> Fibre Optic
