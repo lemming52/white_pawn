@@ -8,32 +8,50 @@ package main
 
 import (
 	"crypto/sha256" //!+
+	"crypto/sha512"
 	"fmt"
 	"math/bits"
+	"os"
+)
+
+const (
+	MATCH = "-m"
+	HASH  = "-h"
 )
 
 func main() {
-	c1 := sha256.Sum256([]byte("x"))
-	c2 := sha256.Sum256([]byte("X"))
-	fmt.Printf("%x\n%x\n%t\n%T\n", c1, c2, c1 == c2, c1)
-	for i, n := range c1 {
-		fmt.Printf("%08b %08b\n", n, c2[i]) // prints 00000000 11111101
+	if len(os.Args) < 2 {
+		fmt.Println("Incorrect arguments")
+		return
 	}
-	fmt.Println(matchCount(c1, c2))
-	// Output:
-	// 2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881
-	// 4b68ab3847feda7d6c62c1fbcbeebfa35eab7351ed5e78f4ddadea5df64b8015
-	// false
-	// [32]uint8
+	function := os.Args[1]
+
+	if function == MATCH {
+		fmt.Println(matchCount(os.Args[2], os.Args[3]))
+	} else if function == HASH {
+		hash(os.Args[2], os.Args[3])
+	}
 }
 
-func matchCount(a, b [32]byte) int {
+func matchCount(x, y string) int {
+	a := sha256.Sum256([]byte(x))
+	b := sha256.Sum256([]byte(y))
 	count := 0
 	for i, aByte := range a {
 		bByte := b[i]
 		count += bits.OnesCount8(^(aByte ^ bByte))
 	}
 	return count
+}
+
+func hash(flag, x string) {
+	if flag == "256" {
+		fmt.Println(sha256.Sum256([]byte(x)))
+	} else if flag == "384" {
+		fmt.Println(sha512.Sum384([]byte(x)))
+	} else if flag == "512" {
+		fmt.Println(sha512.Sum512([]byte(x)))
+	}
 }
 
 //!-
