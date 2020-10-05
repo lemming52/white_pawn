@@ -32,7 +32,6 @@ func main() {
 
 	// Interactive test of reverse.
 	input := bufio.NewScanner(os.Stdin)
-outer:
 	for input.Scan() {
 		var ints []int
 		for _, s := range strings.Fields(input.Text()) {
@@ -63,6 +62,14 @@ func reverseArray(a *[6]int) {
 		j := l - i - 1
 		a[i], a[j] = a[j], a[i]
 	}
+}
+
+// rotate in single pass
+// exercise 4.4
+func rotate(s []int) {
+	tmp := s[0]:
+	copy(s, s[1:])
+	copy(s[:len(s)-1], tmp)
 }
 
 //!-rev
